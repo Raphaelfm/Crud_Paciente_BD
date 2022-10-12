@@ -20,7 +20,7 @@ namespace Crud_Paciente_BD.Models
         public int id_endereco;
 
         public ConexaoBanco banco;
-        //Endereco endereco = new Endereco();
+        Endereco endereco = new Endereco();
 
         public Paciente()
         {
