@@ -14,7 +14,7 @@ namespace Crud_Paciente_BD.Models
         public string crm;
         public string nome;
         public string celular;
-        public int endereco_medico;
+        public int id_endereco;
 
         public ConexaoBanco banco;
         Endereco endereco = new Endereco();
@@ -25,7 +25,7 @@ namespace Crud_Paciente_BD.Models
             this.nome = "";
             this.crm = "";      
             this.celular = "";
-            this.endereco_medico = 0;
+            this.id_endereco = 0;
 
 
             this.banco = new ConexaoBanco();
@@ -35,13 +35,13 @@ namespace Crud_Paciente_BD.Models
         public void setNome(string novon) { this.nome = novon; }
         public void setCrm(string novocrm) { this.crm = novocrm; }
         public void setCelular(string novoc) { this.celular = novoc; }
-        public void setEndereco_medico(int novoe) { this.endereco_medico = novoe; }
+        public void setEndereco_medico(int novoe) { this.id_endereco = novoe; }
 
         public int getID_medico() { return this.id_medico; }
         public string getNome() { return this.nome; }
         public string getCrm() { return this.crm; }
         public string getCelular() { return this.celular; }
-        public int getIdEndereco_medico() { return this.endereco_medico; }
+        public int getIdEndereco_medico() { return this.id_endereco; }
 
         // CRIAR METODO PARA BUSCAR MEDICOS
 
@@ -71,7 +71,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`crm`, `nome`,`celular`," +
-                "`endereco_medico`) VALUES ('" +
+                "`id_endereco`) VALUES ('" +
                 this.getCrm() + "', '" +
                 this.getNome() + "', '" +
                 this.getCelular() + "', '" +
