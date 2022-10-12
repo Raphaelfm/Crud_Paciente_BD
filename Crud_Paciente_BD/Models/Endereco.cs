@@ -110,10 +110,16 @@ namespace Crud_Paciente_BD.Models
             
         }
         //---CONTAGEM--
-        public MySqlDataReader contagemenderecos()
+        public int QuantidadeEnderecos()
         {
             this.banco.conectar();
-            return this.banco.Query("select count(*) from endereco; ");
+            int contagem = 0;
+            var temp = this.banco.Query("SELECT COUNT(*) FROM ENDERECO");
+            while (temp.Read())
+            {
+                contagem = temp.GetInt32(0);
+            }
+            return contagem;
             
         }
     }
