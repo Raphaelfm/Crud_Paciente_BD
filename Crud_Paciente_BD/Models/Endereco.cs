@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient; // conexao com o banco de dados
 
 namespace Crud_Paciente_BD.Models
 {
-    internal class Enderecos
+    internal class Endereco
     {
         //ATRIBUTOS
         public int id_endereco;
@@ -21,7 +21,7 @@ namespace Crud_Paciente_BD.Models
         private ConexaoBanco banco;
 
         //CONSTRUTOR
-        public Enderecos()
+        public Endereco()
         {
             this.id_endereco = 0;
             this.logradouro = "";
@@ -100,6 +100,21 @@ namespace Crud_Paciente_BD.Models
             this.banco.conectar();
             this.banco.nonQuery("Delete from endereco where id_endereco = '" + this.getId_endereco() + "';");
             this.banco.close();
+        }
+        //---LISTAR---
+        public  MySqlDataReader listarEnderecos()
+        {
+            this.banco.conectar();
+            return this.banco.Query("select id_endereco, logradouro, numero,complemento,bairro, municipio, uf," +
+                " CEP from endereco; ");
+            
+        }
+        //---CONTAGEM--
+        public MySqlDataReader contagemenderecos()
+        {
+            this.banco.conectar();
+            return this.banco.Query("select count(*) from endereco; ");
+            
         }
     }
 }
