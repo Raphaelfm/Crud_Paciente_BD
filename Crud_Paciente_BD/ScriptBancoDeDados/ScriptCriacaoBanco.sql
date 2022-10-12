@@ -32,4 +32,23 @@ CREATE TABLE `login` (
   PRIMARY KEY (`usuario`)
 );
 
+CREATE TABLE `medico`(
+  `id_medico` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `crm` varchar(20) NOT NULL,
+  `celular` varchar(17) NOT NULL, 
+  `idendereco_medico` int(11) NOT NULL,
+  PRIMARY KEY(`id_medico`),
+  KEY `id_endereco` (`id_endereco`),
+  CONSTRAINT `medico_ibfk` FOREIGN KEY (`id_endereco`) REFERENCES `endereco` (`id_endereco`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `consulta`(
+  `id_consulta` int (11) NOT NULL AUTO_INCREMENT,
+  `descricao_consulta` varchar(200) NOT NULL,
+  PRIMARY KEY(`id_consulta`),
+  CONSTRAINT `medico_fk` FOREIGN KEY (`id_medico`) REFERENCES `medico` (`id_medico`),
+  CONSTRAINT `paciente_fk` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`),
+);
+
 insert into login  values ('adm', 'adm');
