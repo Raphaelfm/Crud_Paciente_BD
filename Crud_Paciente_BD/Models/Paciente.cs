@@ -117,5 +117,37 @@ namespace Crud_Paciente_BD.Models
             }
             return contagem;
         }
+
+        public List<Paciente> GetPacientes()
+        {
+            List<Paciente> lista = new List<Paciente>();
+            this.banco.conectar();
+             var pacientes = this.banco.Query("select p.id_paciente, p.Nome, p.dt_nasc,p.sexo,p.CPF, p.celular, p.email," +
+                " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from paciente p " +
+                "join endereco e on p.id_endereco = e.id_endereco; ");
+
+            try
+            {
+                while (pacientes.HasRows)
+                {                    
+                    while (pacientes.Read())
+                    {
+                        Paciente listaPaciente = new Paciente();
+                        listaPaciente.setId_paciente(pacientes.GetInt32(0));
+                        listaPaciente.setNome(pacientes.GetString(1));
+
+                        lista.Add(listaPaciente);
+                    }
+                    pacientes.NextResult();                    
+                }
+                
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
     }
 }
