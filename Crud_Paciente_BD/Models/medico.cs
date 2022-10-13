@@ -88,10 +88,18 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
 
-        public MySqlDataReader Quantidadeconsulta()
+        
+        //Contagem de medicos do banco
+        public int Quantidademedico()
         {
             this.banco.conectar();
-            return this.banco.Query("SELECT COUNT (*) FROM MEDICOS ;");
+            int contagem = 0;
+            var temp = this.banco.Query("SELECT COUNT(*) FROM MEDICO;");
+            while (temp.Read())
+            {
+                contagem = temp.GetInt32(0);
+            }
+            return contagem;
         }
 
     }
