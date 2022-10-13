@@ -11,21 +11,21 @@ namespace Crud_Paciente_BD
         {
             SplashScreen();
             bool runnig = true;
-            int opcao = 0;
+            char opcao = '0';
 
             do
             {
                 Console.WriteLine("Digite a opção desejada: \n1 - RELATORIOS \n2 - INSERIR REGISTROS" +
                 "\n3 - REMOVER REGISTROS \n4 - ATUALIZAR REGISTROS \n5 - SAIR");
                 Console.WriteLine();
-                opcao = Console.Read();
+                opcao = (char)Console.Read();
                 Console.WriteLine();
                 switch (opcao)
                 {
-                    case 1:
+                    case '1':
                         Console.WriteLine();
                         break;
-                    case 5:
+                    case '5':
                         runnig = false;
                         break;
                     default:
