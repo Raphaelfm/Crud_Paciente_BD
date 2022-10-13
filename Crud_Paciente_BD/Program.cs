@@ -11,28 +11,31 @@ namespace Crud_Paciente_BD
         {
             SplashScreen();
             bool runnig = true;
-            char opcao = '0';
+            int opcao = 0;
 
-            do
+            while (runnig)
             {
+                Console.Clear();
                 Console.WriteLine("Digite a opção desejada: \n1 - RELATORIOS \n2 - INSERIR REGISTROS" +
                 "\n3 - REMOVER REGISTROS \n4 - ATUALIZAR REGISTROS \n5 - SAIR");
+
                 Console.WriteLine();
-                opcao = (char)Console.Read();
+                opcao = int.Parse(Console.ReadLine());
                 Console.WriteLine();
+
                 switch (opcao)
                 {
-                    case '1':
-                        Console.WriteLine();
+                    case 1:
+                        Relatorios();
                         break;
-                    case '5':
+                    case 5:
                         runnig = false;
                         break;
                     default:
                         Console.WriteLine("Opção inválida, por favor digite a opção desejada novamente.");
                         break;
                 }
-            } while (runnig);
+            } 
 
 
         }
@@ -70,6 +73,49 @@ namespace Crud_Paciente_BD
 
             Console.WriteLine("DISCIPLINA: BANCO DE DADOS - 2022/2 \nPROFESSOR: HOWARD ROATTI");
             Console.WriteLine("##################################################\n");
+        }
+
+        static void Relatorios()
+        {
+            Paciente paciente = new Paciente();
+            bool running = true;
+            int opcao = 0;
+
+            do
+            {
+                Console.WriteLine("Digite a opção desejada: \n" +
+                "1 - Listar pacientes \n" +
+                "2 - Listar Medicos \n" +
+                "3 - Listar Consultas \n" +
+                "4 - Listar Consultas por médico \n" +
+                "5 - Retornar ao menu principal");
+
+                Console.WriteLine();
+                opcao = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+
+                switch (opcao)
+                {
+                    case 1:
+                        Console.WriteLine("Listando pacientes: ");
+                        Console.WriteLine(paciente.getNome());
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        running = false;
+                        break;
+                    default:
+                        Console.WriteLine("Opcao inválida, digite novamente a opcao desejada.");
+                        Console.WriteLine();
+                        break;
+                }
+            } while (running);
+            
         }
     }
 }
