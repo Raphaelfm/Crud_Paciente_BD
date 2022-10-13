@@ -57,8 +57,8 @@ namespace Crud_Paciente_BD
 
             Console.WriteLine("TOTAL DE REGISTROS EXISTENTES:");
             Console.WriteLine($" 1 - PACIENTES: {paciente.QuantidadePacientes()}");
-            //Console.WriteLine($" 2 - MEDICOS: {medico.Quantidadeconsulta()}");
-            //Console.WriteLine($" 3 - CONSULTAS MEDICAS: {consulta.Quantidadeconsulta()}");
+            Console.WriteLine($" 2 - MEDICOS: {medico.Quantidademedico()}");
+            Console.WriteLine($" 3 - CONSULTAS MEDICAS: {consulta.Quantidadeconsulta()}");
             Console.WriteLine($" 4 - ENDEREÇOS: {endereco.QuantidadeEnderecos()}");
             Console.WriteLine("\n");
 
