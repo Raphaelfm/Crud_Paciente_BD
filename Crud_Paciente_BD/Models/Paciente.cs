@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,6 +104,18 @@ namespace Crud_Paciente_BD.Models
             this.banco.conectar();
             this.banco.nonQuery("Delete from paciente where id_paciente ='" + this.getId_paciente() + "'");
             this.banco.close();
+        }
+
+        public int QuantidadePacientes()
+        {
+            this.banco.conectar();
+            int contagem = 0;
+            var temp = this.banco.Query("SELECT COUNT(*) FROM PACIENTE;");
+            while (temp.Read())
+            {
+                contagem = temp.GetInt32(0);
+            }
+            return contagem;
         }
     }
 }
