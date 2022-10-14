@@ -28,6 +28,9 @@ namespace Crud_Paciente_BD
                     case 1:
                         Relatorios();
                         break;
+                    case 2:
+                        InserirRegistros();
+                        break;
                     case 5:
                         runnig = false;
                         break;
@@ -43,8 +46,8 @@ namespace Crud_Paciente_BD
         static void SplashScreen()
         {
             Paciente paciente = new Paciente();
-            medico medico = new medico();
-            consulta consulta = new consulta();
+            Medico medico = new Medico();
+            Consulta consulta = new Consulta();
             Endereco endereco = new Endereco();
             
             
@@ -134,6 +137,85 @@ namespace Crud_Paciente_BD
                         break;
                 }
             } while (running);
+            
+        }
+
+        static void InserirRegistros()
+        {
+            Paciente paciente = new Paciente();
+            Endereco endereco = new Endereco();
+            bool running = true;
+            int opcao = 0;
+
+            do
+            {
+                Console.WriteLine("Digite a opção desejada: \n" +
+                "1 - Cadastrar pacientes \n" +
+                "2 - Cadastrar Medicos \n" +
+                "3 - Cadastrar Consultas \n" +
+                "5 - Retornar ao menu principal");
+
+                Console.WriteLine();
+                opcao = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+
+                switch (opcao)
+                {
+                    case 1:
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine("Bem vindo ao Cadastro de Pacientes");
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor preencha as informações abaixo:");
+                        Console.WriteLine("-----------------------------------------");
+                        Console.WriteLine();
+                        Console.Write("NOME DO PACIENTE: ");
+                        paciente.SetNome(Console.ReadLine());
+                        Console.Write("DATA DE NASCIMENTO: ");
+                        paciente.SetDt_nasc(Console.ReadLine());
+                        Console.Write("SEXO: ");
+                        paciente.SetSexo(Console.ReadLine());
+                        Console.Write("CPF: ");
+                        paciente.SetCpf(Console.ReadLine());
+                        Console.Write("CELULAR: ");
+                        paciente.SetCelular(Console.ReadLine());
+                        Console.Write("EMAIL: ");
+                        paciente.SetEmail(Console.ReadLine());
+                        
+                        Console.Write("LOGRADOURO: ");
+                        endereco.SetLogradouro(Console.ReadLine());
+                        Console.Write("NUMERO: ");
+                        endereco.SetNumero(Console.ReadLine());
+                        Console.Write("COMPLEMENTO: ");
+                        endereco.SetComplemento(Console.ReadLine());
+                        Console.Write("BAIRRO: ");
+                        endereco.SetBairro(Console.ReadLine());
+                        Console.Write("MUNICIPIO: ");
+                        endereco.SetMunicipio(Console.ReadLine());
+                        Console.Write("UF: ");
+                        endereco.SetUf(Console.ReadLine());
+                        Console.Write("CEP: ");
+                        endereco.SetCep(Console.ReadLine());
+
+                        endereco.cadastrarEndereco();
+
+                        paciente.SetId_endereco(endereco.GetId_endereco());
+                       
+                        paciente.CadastrarPaciente();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 5:
+                        Console.WriteLine("Retornando ao menu principal...");
+                        running = false;
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida, por favor digite novamente a opção desejada.");
+                        break;
+                }
+            }while (running);
             
         }
     }
