@@ -55,7 +55,7 @@ namespace Crud_Paciente_BD.Models
         public int getId_endereco() { return this.id_endereco; }
 
         // CRIAR METODO PARA BUSCAR PACIENTES PARA O GRID
-        public MySqlDataReader listarPaciente()
+        public MySqlDataReader ListarPaciente()
         {
             this.banco.conectar();
             return this.banco.Query("select p.id_paciente, p.Nome, p.dt_nasc,p.sexo,p.CPF, p.celular, p.email," +
@@ -63,7 +63,7 @@ namespace Crud_Paciente_BD.Models
                 "join endereco e on p.id_endereco = e.id_endereco; ");
         }
         // CRIAR METODO PARA BUSCAR PACIENTES PELO BOTÃO OK
-        public MySqlDataReader listarPacientePorOk(string filtro)
+        public MySqlDataReader ListarPacientePorOk(string filtro)
         {
             this.banco.conectar();
             return this.banco.Query("select p.id_paciente, p.Nome,p.dt_nasc,p.sexo, p.CPF, p.celular, p.email, " +
@@ -71,7 +71,7 @@ namespace Crud_Paciente_BD.Models
                 "join endereco e on p.id_endereco = e.id_endereco where p.Nome like '%" + filtro + "%'; ");
         }
         // ---INSERIR---
-        public void cadastrarPaciente()
+        public void CadastrarPaciente()
         {
             this.banco.conectar();
             this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`paciente` (`Nome`, `dt_nasc`,`sexo`," +
@@ -86,7 +86,7 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         // ---ALTERAR---
-        public void alterarPaciente()
+        public void AlterarPaciente()
         {
             this.banco.conectar();
             this.banco.nonQuery("UPDATE paciente set nome='" + this.getNome() +
@@ -99,7 +99,7 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         // ---EXCLUIR---
-        public void excluirPaciente()
+        public void ExcluirPaciente()
         {
             this.banco.conectar();
             this.banco.nonQuery("Delete from paciente where id_paciente ='" + this.getId_paciente() + "'");
@@ -122,9 +122,7 @@ namespace Crud_Paciente_BD.Models
         {
             List<Paciente> lista = new List<Paciente>();
             this.banco.conectar();
-             var pacientes = this.banco.Query("select p.id_paciente, p.Nome, p.dt_nasc,p.sexo,p.CPF, p.celular, p.email," +
-                " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from paciente p " +
-                "join endereco e on p.id_endereco = e.id_endereco; ");
+            var pacientes = ListarPaciente();
 
             try
             {
@@ -135,6 +133,12 @@ namespace Crud_Paciente_BD.Models
                         Paciente listaPaciente = new Paciente();
                         listaPaciente.setId_paciente(pacientes.GetInt32(0));
                         listaPaciente.setNome(pacientes.GetString(1));
+                        listaPaciente.setDt_nasc(pacientes.GetString(2));
+                        listaPaciente.setSexo(pacientes.GetString(3));
+                        listaPaciente.setCpf(pacientes.GetString(4));
+                        listaPaciente.setCelular(pacientes.GetString(5));
+                        listaPaciente.setEmail(pacientes.GetString(6));
+                        listaPaciente.setId_endereco(pacientes.GetInt32(7));                       
 
                         lista.Add(listaPaciente);
                     }
