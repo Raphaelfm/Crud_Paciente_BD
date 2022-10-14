@@ -40,7 +40,7 @@ namespace Crud_Paciente_BD.Models
         public int GetId_paciente() { return this.id_paciente; }
 
         // CRIAR METODO PARA BUSCAR CONSULTAS
-        public MySqlDataReader listarConsultas()
+        public MySqlDataReader ListarConsultas()
         {
             this.banco.conectar();
             return this.banco.Query("select c.id_consulta, c.descricao_consulta, " +
@@ -50,7 +50,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---ALTERAR---
-        public void alterarConsulta()
+        public void AlterarConsulta()
         {
             this.banco.conectar();
             this.banco.nonQuery("UPDATE consulta set descricao_consulta='" + this.GetDescricao_consulta() +
@@ -59,7 +59,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---INSERIR---
-        public void cadastrarConsulta()
+        public void CadastrarConsulta()
         {
             this.banco.conectar();
             this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`descricao_consulta`) VALUES ('" +
@@ -68,7 +68,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---EXCLUIR---
-        public void excluirConsulta()
+        public void ExcluirConsulta()
         {
             this.banco.conectar();
             this.banco.nonQuery("Delete from paciente where id_medico ='" + this.GetID_consulta() + "'");
@@ -76,7 +76,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         //Contagem de consultas do banco
-        public int Quantidadeconsulta()
+        public int QuantidadeConsulta()
         {
             this.banco.conectar();
             int contagem = 0;
@@ -92,7 +92,7 @@ namespace Crud_Paciente_BD.Models
         public List<Consulta> GetConsultas()
         {
             List<Consulta> lista = new List<Consulta>();
-            var consultas = listarConsultas();
+            var consultas = ListarConsultas();
 
             try
             {
