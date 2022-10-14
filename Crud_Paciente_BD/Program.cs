@@ -15,7 +15,7 @@ namespace Crud_Paciente_BD
 
             while (runnig)
             {
-                Console.Clear();
+                //Console.Clear();
                 Console.WriteLine("Digite a opção desejada: \n1 - RELATORIOS \n2 - INSERIR REGISTROS" +
                 "\n3 - REMOVER REGISTROS \n4 - ATUALIZAR REGISTROS \n5 - SAIR");
 
@@ -57,8 +57,8 @@ namespace Crud_Paciente_BD
 
             Console.WriteLine("TOTAL DE REGISTROS EXISTENTES:");
             Console.WriteLine($" 1 - PACIENTES: {paciente.QuantidadePacientes()}");
-            //Console.WriteLine($" 2 - MEDICOS: {medico.Quantidadeconsulta()}");
-            //Console.WriteLine($" 3 - CONSULTAS MEDICAS: {consulta.Quantidadeconsulta()}");
+            Console.WriteLine($" 2 - MEDICOS: {medico.Quantidademedico()}");
+            Console.WriteLine($" 3 - CONSULTAS MEDICAS: {consulta.Quantidadeconsulta()}");
             Console.WriteLine($" 4 - ENDEREÇOS: {endereco.QuantidadeEnderecos()}");
             Console.WriteLine("\n");
 
@@ -98,7 +98,12 @@ namespace Crud_Paciente_BD
                 {
                     case 1:
                         Console.WriteLine("Listando pacientes: ");
-                        Console.WriteLine(paciente.getNome());
+                        Console.WriteLine("ID | NOME");
+                        foreach (var item in paciente.GetPacientes())
+                        {
+                            Console.WriteLine($"{item.getId_paciente()}    {item.getNome()}");
+                        }
+                        Console.WriteLine();
                         break;
                     case 2:
                         break;
