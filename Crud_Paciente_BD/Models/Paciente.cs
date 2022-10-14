@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Crud_Paciente_BD.Models
 {
-    internal class Paciente
+    internal class Paciente : Endereco
     {
         //atributos
         public int id_paciente;
@@ -33,27 +33,28 @@ namespace Crud_Paciente_BD.Models
             this.cpf = "";
             this.celular = "";
             this.email = "";
-            this.id_endereco = 0;
+            this.id_endereco = 0;       
 
             this.banco = new ConexaoBanco();
         }
-        public void setId_paciente(int novo) { this.id_paciente = novo; }
-        public void setNome(string novo) { this.nome = novo; }
-        public void setDt_nasc(string novo) { this.dt_nasc = novo; }
-        public void setSexo(string novo) { this.sexo = novo; }
-        public void setCpf(string novo) { this.cpf = novo; }
-        public void setCelular(string novo) { this.celular = novo; }
-        public void setEmail(string novo) { this.email = novo; }
-        public void setId_endereco(int novo) { this.id_endereco = novo; }
+        public void SetId_paciente(int novo) { this.id_paciente = novo; }
+        public void SetNome(string novo) { this.nome = novo; }
+        public void SetDt_nasc(string novo) { this.dt_nasc = novo; }
+        public void SetSexo(string novo) { this.sexo = novo; }
+        public void SetCpf(string novo) { this.cpf = novo; }
+        public void SetCelular(string novo) { this.celular = novo; }
+        public void SetEmail(string novo) { this.email = novo; }
+        public void SetId_endereco(int novo) { this.id_endereco = novo; }
 
-        public int getId_paciente() { return this.id_paciente; }
-        public string getNome() { return this.nome; }
-        public string getDt_nasc() { return this.dt_nasc; }
-        public string getSexo() { return this.sexo; }
-        public string getCpf() { return this.cpf; }
-        public string getCelular() { return this.celular; }
-        public string getEmail() { return this.email; }
-        public int getId_endereco() { return this.id_endereco; }
+        public int GetId_paciente() { return this.id_paciente; }
+        public string GetNome() { return this.nome; }
+        public string GetDt_nasc() { return this.dt_nasc; }
+        public string GetSexo() { return this.sexo; }
+        public string GetCpf() { return this.cpf; }
+        public string GetCelular() { return this.celular; }
+        public string GetEmail() { return this.email; }
+        public int GetId_endereco() { return this.id_endereco; }
+
 
         // CRIAR METODO PARA BUSCAR PACIENTES PARA O GRID
         public MySqlDataReader ListarPaciente()
@@ -77,33 +78,33 @@ namespace Crud_Paciente_BD.Models
             this.banco.conectar();
             this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`paciente` (`Nome`, `dt_nasc`,`sexo`," +
                 "`CPF`, `celular`,`email`, `id_endereco`) VALUES ('" +
-                this.getNome() + "', '" +
-                this.getDt_nasc() + "', '" +
-                this.getSexo() + "', '" +
-                this.getCpf() + "', '" +
-                this.getCelular() + "', '" +
-                this.getEmail() + "', '" +
-                this.getId_endereco() + "');");
+                this.GetNome() + "', '" +
+                this.GetDt_nasc() + "', '" +
+                this.GetSexo() + "', '" +
+                this.GetCpf() + "', '" +
+                this.GetCelular() + "', '" +
+                this.GetEmail() + "', '" +
+                this.GetId_endereco() + "');");
             this.banco.close();
         }
         // ---ALTERAR---
         public void AlterarPaciente()
         {
             this.banco.conectar();
-            this.banco.nonQuery("UPDATE paciente set nome='" + this.getNome() +
-                "', dt_nasc='" + this.getDt_nasc() +
-                "', sexo='" + this.getSexo() +
-                "', cpf='" + this.getCpf() +
-                "', celular='" + this.getCelular() +
-                "', email='" + this.getEmail() +
-                "' where id_paciente ='" + this.getId_paciente() + "';");
+            this.banco.nonQuery("UPDATE paciente set nome='" + this.GetNome() +
+                "', dt_nasc='" + this.GetDt_nasc() +
+                "', sexo='" + this.GetSexo() +
+                "', cpf='" + this.GetCpf() +
+                "', celular='" + this.GetCelular() +
+                "', email='" + this.GetEmail() +
+                "' where id_paciente ='" + this.GetId_paciente() + "';");
             this.banco.close();
         }
         // ---EXCLUIR---
         public void ExcluirPaciente()
         {
             this.banco.conectar();
-            this.banco.nonQuery("Delete from paciente where id_paciente ='" + this.getId_paciente() + "'");
+            this.banco.nonQuery("Delete from paciente where id_paciente ='" + this.GetId_paciente() + "'");
             this.banco.close();
         }
 
@@ -121,8 +122,7 @@ namespace Crud_Paciente_BD.Models
 
         public List<Paciente> GetPacientes()
         {
-            List<Paciente> lista = new List<Paciente>();
-            List<Endereco> enderecos = new List<Endereco>();
+            List<Paciente> lista = new List<Paciente>();           
             
             this.banco.conectar();
             var pacientes = ListarPaciente();
@@ -135,13 +135,21 @@ namespace Crud_Paciente_BD.Models
                     {
                         Paciente listaPaciente = new Paciente();
                         
-                        listaPaciente.setId_paciente(pacientes.GetInt32(0));
-                        listaPaciente.setNome(pacientes.GetString(1));
-                        listaPaciente.setDt_nasc(pacientes.GetString(2));
-                        listaPaciente.setSexo(pacientes.GetString(3));
-                        listaPaciente.setCpf(pacientes.GetString(4));
-                        listaPaciente.setCelular(pacientes.GetString(5));
-                        listaPaciente.setEmail(pacientes.GetString(6));                        
+                        listaPaciente.SetId_paciente(pacientes.GetInt32(0));
+                        listaPaciente.SetNome(pacientes.GetString(1));
+                        listaPaciente.SetDt_nasc(pacientes.GetString(2));
+                        listaPaciente.SetSexo(pacientes.GetString(3));
+                        listaPaciente.SetCpf(pacientes.GetString(4));
+                        listaPaciente.SetCelular(pacientes.GetString(5));
+                        listaPaciente.SetEmail(pacientes.GetString(6));
+                        listaPaciente.SetId_endereco(pacientes.GetInt32(7));
+                        listaPaciente.SetLogradouro(pacientes.GetString(8));
+                        listaPaciente.SetNumero(pacientes.GetString(9));
+                        listaPaciente.SetComplemento(pacientes.GetString(10));
+                        listaPaciente.SetBairro(pacientes.GetString(11));
+                        listaPaciente.SetMunicipio(pacientes.GetString(12));
+                        listaPaciente.SetUf(pacientes.GetString(13));
+                        listaPaciente.SetCep(pacientes.GetString(14));
 
                         lista.Add(listaPaciente);  
                     }
@@ -155,44 +163,6 @@ namespace Crud_Paciente_BD.Models
             }
 
             return lista;
-        }
-
-        public List<Endereco> GetEnderecosPacientes()
-        {
-            List<Endereco> lista = new List<Endereco>();
-
-            this.banco.conectar();
-            var enderecos = ListarPaciente();
-
-            try
-            {
-                while (enderecos.HasRows)
-                {
-                    while (enderecos.Read())
-                    {
-                        Endereco listaEndereco = new Endereco();
-
-                        listaEndereco.setId_endereco(enderecos.GetInt32(7));
-                        listaEndereco.setLogradouro(enderecos.GetString(8));
-                        listaEndereco.setNumero(enderecos.GetString(9));
-                        listaEndereco.setComplemento(enderecos.GetString(10));
-                        listaEndereco.setBairro(enderecos.GetString(11));
-                        listaEndereco.setMunicipio(enderecos.GetString(12));
-                        listaEndereco.setUf(enderecos.GetString(13));
-                        listaEndereco.setCep(enderecos.GetString(14));
-
-                        lista.Add(listaEndereco);
-                    }
-                    enderecos.NextResult();
-                }
-            }
-            catch(MySqlException e)
-            {
-                Console.WriteLine(e);
-            }
-            
-
-            return lista;
-        }
+        }        
     }
 }
