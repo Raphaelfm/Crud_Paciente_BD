@@ -105,7 +105,11 @@ namespace Crud_Paciente_BD.Models
         //LISTAR O PACIENTE NA TELA
         public List<medico> GetMedicos()
         {
+
             List<medico> lista = new List<medico>();
+            //List<Endereco> enderecos = new List<Endereco>();
+
+            this.banco.conectar();
             var medicos = listarMedicos();
 
             try
@@ -119,7 +123,7 @@ namespace Crud_Paciente_BD.Models
                         listaMedico.setNome(medicos.GetString(1));
                         listaMedico.setCrm(medicos.GetString(2));
                         listaMedico.setCelular(medicos.GetString(3));
-                        listaMedico.setEndereco_medico(medicos.GetInt32(4));
+                        //listaMedico.setEndereco_medico(medicos.GetInt32(4));
 
                         lista.Add(listaMedico);
                     }
@@ -133,6 +137,44 @@ namespace Crud_Paciente_BD.Models
 
             return lista;
 
+        }
+
+        public List<Endereco> GetEnderecosMedicos()
+        {
+            List<Endereco> lista = new List<Endereco>();
+
+            this.banco.conectar();
+            var enderecos = listarMedicos();
+
+            try
+            {
+                while (enderecos.HasRows)
+                {
+                    while (enderecos.Read())
+                    {
+                        Endereco listaEndereco = new Endereco();
+
+                        listaEndereco.setId_endereco(enderecos.GetInt32(7));
+                        listaEndereco.setLogradouro(enderecos.GetString(8));
+                        listaEndereco.setNumero(enderecos.GetString(9));
+                        listaEndereco.setComplemento(enderecos.GetString(10));
+                        listaEndereco.setBairro(enderecos.GetString(11));
+                        listaEndereco.setMunicipio(enderecos.GetString(12));
+                        listaEndereco.setUf(enderecos.GetString(13));
+                        listaEndereco.setCep(enderecos.GetString(14));
+
+                        lista.Add(listaEndereco);
+                    }
+                    enderecos.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+
+            return lista;
         }
 
 
