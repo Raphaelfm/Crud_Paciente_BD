@@ -164,24 +164,33 @@ namespace Crud_Paciente_BD.Models
             this.banco.conectar();
             var enderecos = ListarPaciente();
 
-            while (enderecos.HasRows)
+            try
             {
-                while (enderecos.Read())
+                while (enderecos.HasRows)
                 {
-                    Endereco listaEndereco = new Endereco();
+                    while (enderecos.Read())
+                    {
+                        Endereco listaEndereco = new Endereco();
 
-                    listaEndereco.setId_endereco(enderecos.GetInt32(7));
-                    listaEndereco.setLogradouro(enderecos.GetString(8));
-                    listaEndereco.setNumero(enderecos.GetString(9));
-                    listaEndereco.setComplemento(enderecos.GetString(10));
-                    listaEndereco.setBairro(enderecos.GetString(11));
-                    listaEndereco.setMunicipio(enderecos.GetString(12));
-                    listaEndereco.setUf(enderecos.GetString(13));
-                    listaEndereco.setCep(enderecos.GetString(14));
+                        listaEndereco.setId_endereco(enderecos.GetInt32(7));
+                        listaEndereco.setLogradouro(enderecos.GetString(8));
+                        listaEndereco.setNumero(enderecos.GetString(9));
+                        listaEndereco.setComplemento(enderecos.GetString(10));
+                        listaEndereco.setBairro(enderecos.GetString(11));
+                        listaEndereco.setMunicipio(enderecos.GetString(12));
+                        listaEndereco.setUf(enderecos.GetString(13));
+                        listaEndereco.setCep(enderecos.GetString(14));
 
-                    lista.Add(listaEndereco);
+                        lista.Add(listaEndereco);
+                    }
+                    enderecos.NextResult();
                 }
             }
+            catch(MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+            
 
             return lista;
         }
