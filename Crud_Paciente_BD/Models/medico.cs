@@ -45,7 +45,7 @@ namespace Crud_Paciente_BD.Models
 
         // CRIAR METODO PARA BUSCAR MEDICOS
 
-        public MySqlDataReader listarMedicos()
+        public MySqlDataReader ListarMedicos()
         {
             this.banco.conectar();
             return this.banco.Query("select m.id_medico, m.nome, m.crm ,m.celular ," +
@@ -54,7 +54,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---ALTERAR---
-        public void alterarMedico()
+        public void AlterarMedico()
         {
             this.banco.conectar();
             this.banco.nonQuery("UPDATE medico set nome='" + this.GetNome() +
@@ -67,7 +67,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---INSERIR---
-        public void cadastrarMedico()
+        public void CadastrarMedico()
         {
             this.banco.conectar();
             this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`crm`, `nome`,`celular`," +
@@ -81,7 +81,7 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---EXCLUIR---
-        public void excluirMedico()
+        public void ExcluirMedico()
         {
             this.banco.conectar();
             this.banco.nonQuery("Delete from medico where id_medico ='" + this.GetID_medico() + "'");
@@ -90,7 +90,7 @@ namespace Crud_Paciente_BD.Models
 
         
         //Contagem de medicos do banco
-        public int Quantidademedico()
+        public int QuantidadeMedico()
         {
             this.banco.conectar();
             int contagem = 0;
@@ -110,7 +110,7 @@ namespace Crud_Paciente_BD.Models
             
 
             this.banco.conectar();
-            var medicos = listarMedicos();
+            var medicos = ListarMedicos();
 
             try
             {
