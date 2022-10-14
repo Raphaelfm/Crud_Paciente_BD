@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -121,6 +122,8 @@ namespace Crud_Paciente_BD.Models
         public List<Paciente> GetPacientes()
         {
             List<Paciente> lista = new List<Paciente>();
+            List<Endereco> enderecos = new List<Endereco>();
+            
             this.banco.conectar();
             var pacientes = ListarPaciente();
 
@@ -131,16 +134,16 @@ namespace Crud_Paciente_BD.Models
                     while (pacientes.Read())
                     {
                         Paciente listaPaciente = new Paciente();
+                        
                         listaPaciente.setId_paciente(pacientes.GetInt32(0));
                         listaPaciente.setNome(pacientes.GetString(1));
                         listaPaciente.setDt_nasc(pacientes.GetString(2));
                         listaPaciente.setSexo(pacientes.GetString(3));
                         listaPaciente.setCpf(pacientes.GetString(4));
                         listaPaciente.setCelular(pacientes.GetString(5));
-                        listaPaciente.setEmail(pacientes.GetString(6));
-                        listaPaciente.setId_endereco(pacientes.GetInt32(7));                       
+                        listaPaciente.setEmail(pacientes.GetString(6));                        
 
-                        lista.Add(listaPaciente);
+                        lista.Add(listaPaciente);  
                     }
                     pacientes.NextResult();                    
                 }
@@ -150,6 +153,44 @@ namespace Crud_Paciente_BD.Models
             {
                 Console.WriteLine(e);
             }
+
+            return lista;
+        }
+
+        public List<Endereco> GetEnderecosPacientes()
+        {
+            List<Endereco> lista = new List<Endereco>();
+
+            this.banco.conectar();
+            var enderecos = ListarPaciente();
+
+            try
+            {
+                while (enderecos.HasRows)
+                {
+                    while (enderecos.Read())
+                    {
+                        Endereco listaEndereco = new Endereco();
+
+                        listaEndereco.setId_endereco(enderecos.GetInt32(7));
+                        listaEndereco.setLogradouro(enderecos.GetString(8));
+                        listaEndereco.setNumero(enderecos.GetString(9));
+                        listaEndereco.setComplemento(enderecos.GetString(10));
+                        listaEndereco.setBairro(enderecos.GetString(11));
+                        listaEndereco.setMunicipio(enderecos.GetString(12));
+                        listaEndereco.setUf(enderecos.GetString(13));
+                        listaEndereco.setCep(enderecos.GetString(14));
+
+                        lista.Add(listaEndereco);
+                    }
+                    enderecos.NextResult();
+                }
+            }
+            catch(MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+            
 
             return lista;
         }
