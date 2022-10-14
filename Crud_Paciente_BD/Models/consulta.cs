@@ -87,5 +87,37 @@ namespace Crud_Paciente_BD.Models
             }
             return contagem;
         }
+
+        //LISTAR AS CONSULTAS
+        public List<consulta> GetConsultas()
+        {
+            List<consulta> lista = new List<consulta>();
+            var consultas = listarConsultas();
+
+            try
+            {
+                while (consultas.HasRows)
+                {
+                    while (consultas.Read())
+                    {
+                        consulta listaConsulta = new consulta();
+                        listaConsulta.setID_consulta(consultas.GetInt32(0));
+                        listaConsulta.setDescricao_consulta(consultas.GetString(1));
+                        listaConsulta.setId_medico(consultas.GetInt32(2));
+                        listaConsulta.setId_paciente(consultas.GetInt32(3));
+
+                        lista.Add(listaConsulta);
+                    }
+                    consultas.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
+
     }
 }

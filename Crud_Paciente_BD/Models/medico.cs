@@ -102,5 +102,39 @@ namespace Crud_Paciente_BD.Models
             return contagem;
         }
 
+        //LISTAR O PACIENTE NA TELA
+        public List<medico> GetMedicos()
+        {
+            List<medico> lista = new List<medico>();
+            var medicos = listarMedicos();
+
+            try
+            {
+                while (medicos.HasRows)
+                {
+                    while (medicos.Read())
+                    {
+                        medico listaMedico = new medico();
+                        listaMedico.setId_medico(medicos.GetInt32(0));
+                        listaMedico.setNome(medicos.GetString(1));
+                        listaMedico.setCrm(medicos.GetString(2));
+                        listaMedico.setCelular(medicos.GetString(3));
+                        listaMedico.setEndereco_medico(medicos.GetInt32(4));
+
+                        lista.Add(listaMedico);
+                    }
+                    medicos.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+
+        }
+
+
     }
 }
