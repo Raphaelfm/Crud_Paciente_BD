@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Crud_Paciente_BD.Models
 {
-    internal class consulta
+    internal class Consulta
     {
         //atributos
         public int id_consulta;
@@ -15,7 +15,7 @@ namespace Crud_Paciente_BD.Models
         public int id_medico;
         public int id_paciente;
 
-        public consulta()
+        public Consulta()
         {
             this.id_consulta = 0;
             this.descricao_consulta = "";
@@ -28,16 +28,16 @@ namespace Crud_Paciente_BD.Models
         public ConexaoBanco banco;
 
         //gets e sets
-        public void setID_consulta(int novo) { this.id_consulta = novo; }
-        public void setDescricao_consulta(string novoc) { this.descricao_consulta = novoc; }
-        public void setId_medico(int novo) { this.id_medico = novo; }
-        public void setId_paciente(int novo) { this.id_paciente = novo; }
+        public void SetID_consulta(int novo) { this.id_consulta = novo; }
+        public void SetDescricao_consulta(string novoc) { this.descricao_consulta = novoc; }
+        public void SetId_medico(int novo) { this.id_medico = novo; }
+        public void SetId_paciente(int novo) { this.id_paciente = novo; }
         
 
-        public int getID_consulta() { return this.id_consulta; }
-        public string getDescricao_consulta() { return this.descricao_consulta; }
-        public int getId_medico() { return this.id_medico; }
-        public int getId_paciente() { return this.id_paciente; }
+        public int GetID_consulta() { return this.id_consulta; }
+        public string GetDescricao_consulta() { return this.descricao_consulta; }
+        public int GetId_medico() { return this.id_medico; }
+        public int GetId_paciente() { return this.id_paciente; }
 
         // CRIAR METODO PARA BUSCAR CONSULTAS
         public MySqlDataReader listarConsultas()
@@ -53,8 +53,8 @@ namespace Crud_Paciente_BD.Models
         public void alterarConsulta()
         {
             this.banco.conectar();
-            this.banco.nonQuery("UPDATE consulta set descricao_consulta='" + this.getDescricao_consulta() +
-                "' where id_consulta ='" + this.getID_consulta() + "';");
+            this.banco.nonQuery("UPDATE consulta set descricao_consulta='" + this.GetDescricao_consulta() +
+                "' where id_consulta ='" + this.GetID_consulta() + "';");
             this.banco.close();
         }
 
@@ -63,7 +63,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`descricao_consulta`) VALUES ('" +
-                this.getDescricao_consulta() + "');");
+                this.GetDescricao_consulta() + "');");
             this.banco.close();
         }
 
@@ -71,7 +71,7 @@ namespace Crud_Paciente_BD.Models
         public void excluirConsulta()
         {
             this.banco.conectar();
-            this.banco.nonQuery("Delete from paciente where id_medico ='" + this.getID_consulta() + "'");
+            this.banco.nonQuery("Delete from paciente where id_medico ='" + this.GetID_consulta() + "'");
             this.banco.close();
         }
 
@@ -87,5 +87,37 @@ namespace Crud_Paciente_BD.Models
             }
             return contagem;
         }
+
+        //LISTAR AS CONSULTAS
+        public List<Consulta> GetConsultas()
+        {
+            List<Consulta> lista = new List<Consulta>();
+            var consultas = listarConsultas();
+
+            try
+            {
+                while (consultas.HasRows)
+                {
+                    while (consultas.Read())
+                    {
+                        Consulta listaConsulta = new Consulta();
+                        listaConsulta.SetID_consulta(consultas.GetInt32(0));
+                        listaConsulta.SetDescricao_consulta(consultas.GetString(1));
+                        listaConsulta.SetId_medico(consultas.GetInt32(2));
+                        listaConsulta.SetId_paciente(consultas.GetInt32(3));
+
+                        lista.Add(listaConsulta);
+                    }
+                    consultas.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
+
     }
 }
