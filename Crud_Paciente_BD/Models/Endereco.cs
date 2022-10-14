@@ -35,23 +35,23 @@ namespace Crud_Paciente_BD.Models
 
 
         }
-        public void setId_endereco(int novo) { this.id_endereco = novo; }
-        public void setLogradouro(string novo) { this.logradouro = novo; }
-        public void setNumero(string novo) { this.numero = novo; }
-        public void setComplemento(string novo) { this.complemento = novo; }
-        public void setBairro(string novo) { this.bairro = novo; }
-        public void setMunicipio(string novo) { this.municipio = novo; }
-        public void setUf(string novo) { this.uf = novo; }
-        public void setCep(string novo) { this.cep = novo; }
+        public void SetId_endereco(int novo) { this.id_endereco = novo; }
+        public void SetLogradouro(string novo) { this.logradouro = novo; }
+        public void SetNumero(string novo) { this.numero = novo; }
+        public void SetComplemento(string novo) { this.complemento = novo; }
+        public void SetBairro(string novo) { this.bairro = novo; }
+        public void SetMunicipio(string novo) { this.municipio = novo; }
+        public void SetUf(string novo) { this.uf = novo; }
+        public void SetCep(string novo) { this.cep = novo; }
 
-        public int getId_endereco() { return this.id_endereco; }
-        public string getLogradouro() { return this.logradouro; }
-        public string getNumero() { return this.numero; }
-        public string getComplemento() { return this.complemento; }
-        public string getBairro() { return this.bairro; }
-        public string getMunicipio() { return this.municipio; }
-        public string getUf() { return this.uf; }
-        public string getCep() { return this.cep; }
+        public int GetId_endereco() { return this.id_endereco; }
+        public string GetLogradouro() { return this.logradouro; }
+        public string GetNumero() { return this.numero; }
+        public string GetComplemento() { return this.complemento; }
+        public string GetBairro() { return this.bairro; }
+        public string GetMunicipio() { return this.municipio; }
+        public string GetUf() { return this.uf; }
+        public string GetCep() { return this.cep; }
 
         //---INSERIR---
         public void cadastrarEndereco()
@@ -59,24 +59,24 @@ namespace Crud_Paciente_BD.Models
             MySqlDataReader reader;
             this.banco.conectar();
             this.banco.nonQuery("insert into endereco (logradouro,numero,complemento,bairro,municipio,uf,cep)  values " +
-                "('" + this.getLogradouro() + "', '" +
-                this.getNumero() + "','" +
-                this.getComplemento() + "','" +
-                this.getBairro() + "','" +
-                this.getMunicipio() + "','" +
-                this.getUf() + "','" +
-                this.getCep() + "')");
+                "('" + this.GetLogradouro() + "', '" +
+                this.GetNumero() + "','" +
+                this.GetComplemento() + "','" +
+                this.GetBairro() + "','" +
+                this.GetMunicipio() + "','" +
+                this.GetUf() + "','" +
+                this.GetCep() + "')");
             reader = this.banco.Query("select id_endereco from endereco where" +
-                " logradouro='" + this.getLogradouro() +
-                "' and numero='" + this.getNumero() +
-                "' and complemento='" + this.getComplemento() +
-                "' and bairro='" + this.getBairro() +
-                "' and municipio='" + this.getMunicipio() +
-                "' and uf='" + this.getUf() +
-                "' and CEP='" + this.getCep() + "';");
+                " logradouro='" + this.GetLogradouro() +
+                "' and numero='" + this.GetNumero() +
+                "' and complemento='" + this.GetComplemento() +
+                "' and bairro='" + this.GetBairro() +
+                "' and municipio='" + this.GetMunicipio() +
+                "' and uf='" + this.GetUf() +
+                "' and CEP='" + this.GetCep() + "';");
             reader.Read();
             int endereco = reader.GetInt32(0);
-            this.setId_endereco(endereco);
+            this.SetId_endereco(endereco);
             this.banco.close();
         }
         //---ALTERAR---
@@ -84,21 +84,21 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             this.banco.nonQuery("UPDATE `basedados_pacientes`.`endereco` SET " +
-                "`Logradouro` = '" + this.getLogradouro() +
-                "', `Numero` = '" + this.getNumero() +
-                "', `complemento` = '" + this.getComplemento() +
-                "', `Bairro` = '" + this.getBairro() +
-                "', `municipio` = '" + this.getMunicipio() +
-                "', `UF` = '" + this.getUf() +
-                "', `CEP` = '" + this.getCep() +
-                "' WHERE (`id_endereco` = '" + this.getId_endereco() + "')");
+                "`Logradouro` = '" + this.GetLogradouro() +
+                "', `Numero` = '" + this.GetNumero() +
+                "', `complemento` = '" + this.GetComplemento() +
+                "', `Bairro` = '" + this.GetBairro() +
+                "', `municipio` = '" + this.GetMunicipio() +
+                "', `UF` = '" + this.GetUf() +
+                "', `CEP` = '" + this.GetCep() +
+                "' WHERE (`id_endereco` = '" + this.GetId_endereco() + "')");
             this.banco.close();
         }
         //---EXCLUIR---
         public void excluirEndereco()
         {
             this.banco.conectar();
-            this.banco.nonQuery("Delete from endereco where id_endereco = '" + this.getId_endereco() + "';");
+            this.banco.nonQuery("Delete from endereco where id_endereco = '" + this.GetId_endereco() + "';");
             this.banco.close();
         }
         //---LISTAR---

@@ -78,6 +78,7 @@ namespace Crud_Paciente_BD
         static void Relatorios()
         {
             Paciente paciente = new Paciente();
+            Endereco endereco = new Endereco();
             bool running = true;
             int opcao = 0;
 
@@ -98,11 +99,23 @@ namespace Crud_Paciente_BD
                 {
                     case 1:
                         Console.WriteLine("Listando pacientes: ");
-                        foreach (var item in paciente.GetPacientes())
+                        int index = 1;
+                        
+                        foreach (var item in (paciente.GetPacientes() ))
                         {
-                            Console.WriteLine($"ID: {item.getId_paciente()} | NOME: {item.getNome()} | DATA NASCIMENTO: {item.getDt_nasc()} | SEXO: {item.getSexo()} | " +
-                                $"CPF: {item.getCpf()} \nCELULAR: {item.getCelular()} | EMAIL: {item.getEmail()}");
-                            Console.WriteLine("------------------------------------------------------------------------------------------------------");
+                            Console.WriteLine("**************");
+                            Console.WriteLine($"* CADASTRO {index++} *");
+                            Console.WriteLine("**************");
+                            Console.WriteLine("DADOS PESSOAIS: ");
+                            Console.WriteLine($"ID: {item.GetId_paciente()} | NOME: {item.GetNome()} | DATA NASCIMENTO: {item.GetDt_nasc()} | " +
+                                $"SEXO: {item.GetSexo()} | " +
+                                $"CPF: {item.GetCpf()} \nCELULAR: {item.GetCelular()} | EMAIL: {item.GetEmail()} \n" +
+                                $"---------------------------------------------------------------------------------------------\n" +
+                                $"ENDEREÇO COMPLETO:\n" +
+                                $"ID ENDERECO: {item.GetId_endereco()} | LOGRADOURO: {item.GetLogradouro()} | NUMERO: {item.GetNumero()} \n" +
+                                $"COMPLEMENTO: {item.GetComplemento()} | BAIRRO: {item.GetBairro()} | MUNICIPIO: {item.GetMunicipio()} \n" +
+                                $"UF: {item.GetUf()} | CEP: {item.GetCep()}");
+                            Console.WriteLine("=============================================================================================");
                         }
                         Console.WriteLine();
                         break;
