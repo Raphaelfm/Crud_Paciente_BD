@@ -134,7 +134,7 @@ namespace Crud_Paciente_BD.Models
                     while (pacientes.Read())
                     {
                         Paciente listaPaciente = new Paciente();
-                        Endereco listaEndereco = new Endereco();
+                        
                         listaPaciente.setId_paciente(pacientes.GetInt32(0));
                         listaPaciente.setNome(pacientes.GetString(1));
                         listaPaciente.setDt_nasc(pacientes.GetString(2));
