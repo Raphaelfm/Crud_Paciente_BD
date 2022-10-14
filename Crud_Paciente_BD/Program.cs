@@ -46,8 +46,8 @@ namespace Crud_Paciente_BD
         static void SplashScreen()
         {
             Paciente paciente = new Paciente();
-            medico medico = new medico();
-            consulta consulta = new consulta();
+            Medico medico = new Medico();
+            Consulta consulta = new Consulta();
             Endereco endereco = new Endereco();
             
             
@@ -182,19 +182,19 @@ namespace Crud_Paciente_BD
                         Console.Write("EMAIL: ");
                         paciente.SetEmail(Console.ReadLine());
                         
-                        Console.WriteLine("LOGRADOURO: ");
+                        Console.Write("LOGRADOURO: ");
                         endereco.SetLogradouro(Console.ReadLine());
-                        Console.WriteLine("NUMERO: ");
+                        Console.Write("NUMERO: ");
                         endereco.SetNumero(Console.ReadLine());
-                        Console.WriteLine("COMPLEMENTO: ");
+                        Console.Write("COMPLEMENTO: ");
                         endereco.SetComplemento(Console.ReadLine());
-                        Console.WriteLine("BAIRRO: ");
+                        Console.Write("BAIRRO: ");
                         endereco.SetBairro(Console.ReadLine());
-                        Console.WriteLine("MUNICIPIO: ");
+                        Console.Write("MUNICIPIO: ");
                         endereco.SetMunicipio(Console.ReadLine());
-                        Console.WriteLine("UF: ");
+                        Console.Write("UF: ");
                         endereco.SetUf(Console.ReadLine());
-                        Console.WriteLine("CEP: ");
+                        Console.Write("CEP: ");
                         endereco.SetCep(Console.ReadLine());
 
                         endereco.cadastrarEndereco();
