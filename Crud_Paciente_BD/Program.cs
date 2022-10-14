@@ -98,10 +98,11 @@ namespace Crud_Paciente_BD
                 {
                     case 1:
                         Console.WriteLine("Listando pacientes: ");
-                        Console.WriteLine("ID | NOME");
                         foreach (var item in paciente.GetPacientes())
                         {
-                            Console.WriteLine($"{item.getId_paciente()}    {item.getNome()}");
+                            Console.WriteLine($"ID: {item.getId_paciente()} | NOME: {item.getNome()} | DATA NASCIMENTO: {item.getDt_nasc()} | SEXO: {item.getSexo()} | " +
+                                $"CPF: {item.getCpf()} \nCELULAR: {item.getCelular()} | EMAIL: {item.getEmail()}");
+                            Console.WriteLine("------------------------------------------------------------------------------------------------------");
                         }
                         Console.WriteLine();
                         break;
