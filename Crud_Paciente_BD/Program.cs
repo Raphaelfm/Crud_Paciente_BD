@@ -177,7 +177,7 @@ namespace Crud_Paciente_BD
                                 Console.WriteLine("DADOS PESSOAIS: ");
                                 Console.WriteLine($"ID: {item.GetID_consulta()} | DATA DA CONSULTA: {item.GetDt_Consulta()} \n" +
                                     $"ID MEDICO: {item.GetId_medico()} | MEDICO: {item.GetNome_medico()} \n" +
-                                    $"ID PACIENTE: {item.GetId_paciente()} | PACIENTE: {item.GetNome_paciente()}" +
+                                    $"ID PACIENTE: {item.GetId_paciente()} | PACIENTE: {item.GetNome_paciente()} \n\n" +
                                     $"---------------------------------------------------------------------------------------------\n" +
                                     $"DESCRICAO DA CONSULTA: \n{item.GetDescricao_consulta()}");
                                 Console.WriteLine("=============================================================================================");
