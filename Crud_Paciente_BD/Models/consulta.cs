@@ -39,8 +39,8 @@ namespace Crud_Paciente_BD.Models
         public void SetDt_Consulta(string novo) { this.dt_consulta = novo; }
         public void SetId_medico(int novo) { this.id_medico = novo; }
         public void SetId_paciente(int novo) { this.id_paciente = novo; }
-        public void SetNome_paciente(string novo) { this.nome_paciente = novo; }
-        public void SetNome_medico(string novo) { this.nome_medico = novo; }        
+        public void SetNome_medico(string novo) { this.nome_medico = novo; }
+        public void SetNome_paciente(string novo) { this.nome_paciente = novo; }        
 
         public int GetID_consulta() { return this.id_consulta; }
         public string GetDescricao_consulta() { return this.descricao_consulta; }
@@ -55,9 +55,9 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             return this.banco.Query("select c.id_consulta, c.descricao_consulta, c.dt_consulta, " +
-                " p.id_paciente, m.id_medico, m.nome, p.nome from consulta c " +
-                "join paciente p on c.id_paciente = p.id_paciente " +
-                "join medico m on c.id_medico = m.id_medico; ");
+                "m.id_medico, p.id_paciente,  m.nome, p.nome from consulta c " +                
+                "join medico m on c.id_medico = m.id_medico " +
+                "join paciente p on c.id_paciente = p.id_paciente; ");
         }
 
         // ---ALTERAR---
