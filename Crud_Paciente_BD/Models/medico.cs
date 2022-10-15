@@ -70,13 +70,12 @@ namespace Crud_Paciente_BD.Models
         public void CadastrarMedico()
         {
             this.banco.conectar();
-            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`crm`, `nome`,`celular`," +
-                "`id_endereco`) VALUES ('" +
-                this.GetCrm() + "', '" +
+            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`nome`, `crm`,`celular`," +
+                "`id_endereco`) VALUES ('" +                
                 this.GetNome() + "', '" +
+                this.GetCrm() + "', '" +
                 this.GetCelular() + "', '" +
-                this.GetId_Endereco() + "', '" +
-                this.GetCelular() + "');");
+                this.GetId_endereco() + "');");
             this.banco.close();
         }
 
