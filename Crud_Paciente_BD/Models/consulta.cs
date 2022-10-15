@@ -55,7 +55,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             return this.banco.Query("select c.id_consulta, c.descricao_consulta, c.dt_consulta, " +
-                " p.id_paciente, m.id_medico from consulta c " +
+                " p.id_paciente, m.id_medico, m.nome, p.nome from consulta c " +
                 "join paciente p on c.id_paciente = p.id_paciente " +
                 "join medico m on c.id_medico = m.id_medico; ");
         }
@@ -120,7 +120,7 @@ namespace Crud_Paciente_BD.Models
                         listaConsulta.SetDt_Consulta(consultas.GetString(2));
                         listaConsulta.SetId_medico(consultas.GetInt32(3));
                         listaConsulta.SetId_paciente(consultas.GetInt32(4));
-                        listaConsulta.SetNome_paciente(consultas.GetString(5));
+                        listaConsulta.SetNome_medico(consultas.GetString(5));
                         listaConsulta.SetNome_paciente(consultas.GetString(6));
 
                         lista.Add(listaConsulta);
