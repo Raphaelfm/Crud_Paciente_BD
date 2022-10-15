@@ -60,8 +60,8 @@ namespace Crud_Paciente_BD
 
             Console.WriteLine("TOTAL DE REGISTROS EXISTENTES:");
             Console.WriteLine($" 1 - PACIENTES: {paciente.QuantidadePacientes()}");
-            Console.WriteLine($" 2 - MEDICOS: {medico.Quantidademedico()}");
-            Console.WriteLine($" 3 - CONSULTAS MEDICAS: {consulta.Quantidadeconsulta()}");
+            Console.WriteLine($" 2 - MEDICOS: {medico.QuantidadeMedico()}");
+            Console.WriteLine($" 3 - CONSULTAS MEDICAS: {consulta.QuantidadeConsulta()}");
             Console.WriteLine($" 4 - ENDEREÇOS: {endereco.QuantidadeEnderecos()}");
             Console.WriteLine("\n");
 
@@ -82,6 +82,7 @@ namespace Crud_Paciente_BD
         {
             Paciente paciente = new Paciente();
             Endereco endereco = new Endereco();
+            Medico medico = new Medico();
             bool running = true;
             int opcao = 0;
 
@@ -97,32 +98,67 @@ namespace Crud_Paciente_BD
                 Console.WriteLine();
                 opcao = int.Parse(Console.ReadLine());
                 Console.WriteLine();
+                int index = 1;
 
                 switch (opcao)
                 {
                     case 1:
                         Console.WriteLine("Listando pacientes: ");
-                        int index = 1;
-                        
-                        foreach (var item in (paciente.GetPacientes() ))
+                        index = 1;
+                        if (paciente.GetPacientes().Any())
                         {
-                            Console.WriteLine("**************");
-                            Console.WriteLine($"* CADASTRO {index++} *");
-                            Console.WriteLine("**************");
-                            Console.WriteLine("DADOS PESSOAIS: ");
-                            Console.WriteLine($"ID: {item.GetId_paciente()} | NOME: {item.GetNome()} | DATA NASCIMENTO: {item.GetDt_nasc()} | " +
-                                $"SEXO: {item.GetSexo()} | " +
-                                $"CPF: {item.GetCpf()} \nCELULAR: {item.GetCelular()} | EMAIL: {item.GetEmail()} \n" +
-                                $"---------------------------------------------------------------------------------------------\n" +
-                                $"ENDEREÇO COMPLETO:\n" +
-                                $"ID ENDERECO: {item.GetId_endereco()} | LOGRADOURO: {item.GetLogradouro()} | NUMERO: {item.GetNumero()} \n" +
-                                $"COMPLEMENTO: {item.GetComplemento()} | BAIRRO: {item.GetBairro()} | MUNICIPIO: {item.GetMunicipio()} \n" +
-                                $"UF: {item.GetUf()} | CEP: {item.GetCep()}");
-                            Console.WriteLine("=============================================================================================");
+                            foreach (var item in (paciente.GetPacientes()))
+                            {
+                                Console.WriteLine("**************");
+                                Console.WriteLine($"* CADASTRO {index++} *");
+                                Console.WriteLine("**************");
+                                Console.WriteLine("DADOS PESSOAIS: ");
+                                Console.WriteLine($"ID: {item.GetId_paciente()} | NOME: {item.GetNome()} | DATA NASCIMENTO: {item.GetDt_nasc()} | " +
+                                    $"SEXO: {item.GetSexo()} | " +
+                                    $"CPF: {item.GetCpf()} \nCELULAR: {item.GetCelular()} | EMAIL: {item.GetEmail()} \n" +
+                                    $"---------------------------------------------------------------------------------------------\n" +
+                                    $"ENDEREÇO COMPLETO:\n" +
+                                    $"ID ENDERECO: {item.GetId_endereco()} | LOGRADOURO: {item.GetLogradouro()} | NUMERO: {item.GetNumero()} \n" +
+                                    $"COMPLEMENTO: {item.GetComplemento()} | BAIRRO: {item.GetBairro()} | MUNICIPIO: {item.GetMunicipio()} \n" +
+                                    $"UF: {item.GetUf()} | CEP: {item.GetCep()}");
+                                Console.WriteLine("=============================================================================================");
+                            }
                         }
+                        else
+                        {
+                            Console.WriteLine("Ainda não há pacientes cadastrados");
+                        }
+                        
                         Console.WriteLine();
                         break;
                     case 2:
+                        Console.WriteLine("Listando Medicos: ");
+                        index = 1;
+
+                        if(medico.GetMedicos().Any())
+                        {
+                            foreach (var item in medico.GetMedicos())
+                            {
+                                Console.WriteLine("**************");
+                                Console.WriteLine($"* CADASTRO {index++} *");
+                                Console.WriteLine("**************");
+                                Console.WriteLine("DADOS PESSOAIS: ");
+                                Console.WriteLine($"ID: {item.GetID_medico()} | NOME: {item.GetNome()} | CRM: {item.GetCrm()} | " +
+                                    $"CELULAR: {item.GetCelular()} \n" +
+                                    $"---------------------------------------------------------------------------------------------\n" +
+                                    $"ENDEREÇO COMPLETO:\n" +
+                                    $"ID ENDERECO: {item.GetId_endereco()} | LOGRADOURO: {item.GetLogradouro()} | NUMERO: {item.GetNumero()} \n" +
+                                    $"COMPLEMENTO: {item.GetComplemento()} | BAIRRO: {item.GetBairro()} | MUNICIPIO: {item.GetMunicipio()} \n" +
+                                    $"UF: {item.GetUf()} | CEP: {item.GetCep()}");
+                                Console.WriteLine("=============================================================================================");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ainda não há médicos cadastrados");
+                        }
+                        
+                        Console.WriteLine();
                         break;
                     case 3:
                         break;
@@ -144,6 +180,7 @@ namespace Crud_Paciente_BD
         {
             Paciente paciente = new Paciente();
             Endereco endereco = new Endereco();
+            Medico medico = new Medico();
             bool running = true;
             int opcao = 0;
 
@@ -169,6 +206,8 @@ namespace Crud_Paciente_BD
                         Console.WriteLine("Por favor preencha as informações abaixo:");
                         Console.WriteLine("-----------------------------------------");
                         Console.WriteLine();
+
+                        //Dados Pessoais do Passiente
                         Console.Write("NOME DO PACIENTE: ");
                         paciente.SetNome(Console.ReadLine());
                         Console.Write("DATA DE NASCIMENTO: ");
@@ -182,6 +221,7 @@ namespace Crud_Paciente_BD
                         Console.Write("EMAIL: ");
                         paciente.SetEmail(Console.ReadLine());
                         
+                        //Endereço do paciente
                         Console.Write("LOGRADOURO: ");
                         endereco.SetLogradouro(Console.ReadLine());
                         Console.Write("NUMERO: ");
@@ -202,9 +242,53 @@ namespace Crud_Paciente_BD
                         paciente.SetId_endereco(endereco.GetId_endereco());
                        
                         paciente.CadastrarPaciente();
+
+                        Console.WriteLine("Paciente cadastrado com sucesso!! \n\nPressione qualquer tecla para continuar.");
+                        Console.ReadKey();
                         break;
+
                     case 2:
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine("Bem vindo ao Cadastro de Medicos");
+                        Console.WriteLine("=========================================");
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor preencha as informações abaixo:");
+                        Console.WriteLine("-----------------------------------------");
+                        Console.WriteLine();
+
+                        //Dados pessoais do médico
+                        Console.Write("NOME: ");
+                        medico.SetNome(Console.ReadLine());
+                        Console.Write("CRM: ");
+                        medico.SetCrm(Console.ReadLine());                        
+                        Console.Write("CELULAR: ");
+                        medico.SetCelular(Console.ReadLine());                        
+
+                        //Endereço do médico
+                        Console.Write("LOGRADOURO: ");
+                        endereco.SetLogradouro(Console.ReadLine());
+                        Console.Write("NUMERO: ");
+                        endereco.SetNumero(Console.ReadLine());
+                        Console.Write("COMPLEMENTO: ");
+                        endereco.SetComplemento(Console.ReadLine());
+                        Console.Write("BAIRRO: ");
+                        endereco.SetBairro(Console.ReadLine());
+                        Console.Write("MUNICIPIO: ");
+                        endereco.SetMunicipio(Console.ReadLine());
+                        Console.Write("UF: ");
+                        endereco.SetUf(Console.ReadLine());
+                        Console.Write("CEP: ");
+                        endereco.SetCep(Console.ReadLine());
+
+                        endereco.cadastrarEndereco();
+
+                        medico.SetId_endereco(endereco.GetId_endereco());
+
+                        medico.CadastrarMedico();
+                        Console.WriteLine("Medico cadastrado com sucesso!! \n\nPressione qualquer tecla para continuar.");
+                        Console.ReadKey();
                         break;
+
                     case 3:
                         break;
                     case 5:
