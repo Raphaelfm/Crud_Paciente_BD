@@ -210,6 +210,7 @@ namespace Crud_Paciente_BD
             Paciente paciente = new Paciente();
             Endereco endereco = new Endereco();
             Medico medico = new Medico();
+            Consulta consulta = new Consulta();
             bool running = true;
             int opcao = 0;
 
@@ -319,7 +320,30 @@ namespace Crud_Paciente_BD
                         break;
 
                     case 3:
+                        Console.WriteLine("===========================================");
+                        Console.WriteLine("Bem vindo ao Cadastro de Consultas Médicas");
+                        Console.WriteLine("===========================================");
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor preencha as informações abaixo:");
+                        Console.WriteLine("-------------------------------------------");
+                        Console.WriteLine();
+
+                        //Dados da consulta
+                        Console.Write("DATA DA CONSULTA: ");
+                        consulta.SetDt_Consulta(Console.ReadLine());
+                        Console.Write("ID MEDICO: ");
+                        consulta.SetId_medico(int.Parse(Console.ReadLine()));
+                        Console.Write("ID PACIENTE: ");
+                        consulta.SetId_paciente(int.Parse(Console.ReadLine()));
+                        Console.Write("DESCREVA O MOTIVO DE SUA CONSULTA: ");
+                        consulta.SetDescricao_consulta(Console.ReadLine());
+
+                        consulta.CadastrarConsulta();
+                       
+                        Console.WriteLine("Consulta cadastrada com sucesso!! \n\nPressione qualquer tecla para continuar.");
+                        Console.ReadKey();
                         break;
+
                     case 5:
                         Console.WriteLine("Retornando ao menu principal...");
                         running = false;

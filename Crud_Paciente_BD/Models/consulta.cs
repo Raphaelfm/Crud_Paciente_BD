@@ -73,7 +73,10 @@ namespace Crud_Paciente_BD.Models
         public void CadastrarConsulta()
         {
             this.banco.conectar();
-            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`descricao_consulta`) VALUES ('" +
+            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`consulta` (dt_consulta, id_medico, id_paciente, descricao_consulta) VALUES ('" +
+                this.GetDt_Consulta() + "', '" +
+                this.GetId_medico() + "', '" +
+                this.GetId_paciente() + "', '" +
                 this.GetDescricao_consulta() + "');");
             this.banco.close();
         }
