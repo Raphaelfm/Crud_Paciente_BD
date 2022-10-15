@@ -83,6 +83,7 @@ namespace Crud_Paciente_BD
             Paciente paciente = new Paciente();
             Endereco endereco = new Endereco();
             Medico medico = new Medico();
+            Consulta consulta = new Consulta();
             bool running = true;
             int opcao = 0;
 
@@ -131,6 +132,7 @@ namespace Crud_Paciente_BD
                         
                         Console.WriteLine();
                         break;
+
                     case 2:
                         Console.WriteLine("Listando Medicos: ");
                         index = 1;
@@ -160,8 +162,35 @@ namespace Crud_Paciente_BD
                         
                         Console.WriteLine();
                         break;
+
                     case 3:
+                        Console.WriteLine("Listando Consultas: ");
+                        index = 1;
+
+                        if (consulta.GetConsultas().Any())
+                        {
+                            foreach (var item in consulta.GetConsultas())
+                            {
+                                Console.WriteLine("**************");
+                                Console.WriteLine($"* CADASTRO {index++} *");
+                                Console.WriteLine("**************");
+                                Console.WriteLine("DADOS PESSOAIS: ");
+                                Console.WriteLine($"ID: {item.GetID_consulta()} | DATA DA CONSULTA: {item.GetDt_Consulta()} \n" +
+                                    $"ID MEDICO: {item.GetId_medico()} | MEDICO: {item.GetNome_medico()} \n" +
+                                    $"ID PACIENTE: {item.GetId_paciente()} | PACIENTE: {item.GetNome_paciente()}" +
+                                    $"---------------------------------------------------------------------------------------------\n" +
+                                    $"DESCRICAO DA CONSULTA: \n{item.GetDescricao_consulta()}");
+                                Console.WriteLine("=============================================================================================");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ainda não há consultas cadastrados");
+                        }
+
+                        Console.WriteLine();
                         break;
+
                     case 4:
                         break;
                     case 5:
