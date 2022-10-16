@@ -101,8 +101,9 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         // ---EXCLUIR---
-        public void ExcluirPaciente()
+        public void ExcluirPaciente(int id)
         {
+            this.SetId_paciente(id);
             this.banco.conectar();
             this.banco.nonQuery("Delete from paciente where id_paciente ='" + this.GetId_paciente() + "'");
             this.banco.close();

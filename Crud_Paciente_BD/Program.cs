@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using System.Reflection;
 
 namespace Crud_Paciente_BD
 {
@@ -30,6 +31,9 @@ namespace Crud_Paciente_BD
                         break;
                     case 2:
                         InserirRegistros();
+                        break;
+                    case 3:
+                        RemoverRegistros();
                         break;
                     case 5:
                         runnig = false;
@@ -93,7 +97,7 @@ namespace Crud_Paciente_BD
                 "1 - Listar pacientes \n" +
                 "2 - Listar Medicos \n" +
                 "3 - Listar Consultas \n" +
-                "4 - Listar Consultas por médico \n" +
+                "4 - Listar Totais De Consultas por médico \n" +
                 "5 - Retornar ao menu principal");
 
                 Console.WriteLine();
@@ -192,10 +196,41 @@ namespace Crud_Paciente_BD
                         break;
 
                     case 4:
+                        Console.Clear();
+                        Console.WriteLine("Listando Totais De Consultas por médicos: ");
+                        index = 1;
+
+                        if (consulta.ConsultasPorMedicos().Any())
+                        {
+                            Console.WriteLine("*****************");
+                            Console.WriteLine($"* AGRUPAMENTO {index++} *");
+                            Console.WriteLine("*****************");
+                            Console.WriteLine();
+                            Console.WriteLine("Veja para saber qual médico está com a agenda mais livre...");
+                            Console.WriteLine("=============================================================================================");
+
+                            foreach (var item in consulta.ConsultasPorMedicos())
+                            {                                
+                                Console.WriteLine();
+                                Console.WriteLine($"ID MEDICO: {item.GetId_medico()} | NOME MÉDICO: {item.GetNome_medico()} \n" +
+                                    $"TOTAL DE CONSULTAS AGENDADAS: {item.GetTotais()} \n");
+                                    
+                                Console.WriteLine("=============================================================================================");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ainda não há consultas cadastrados");
+                        }
+
+
+                        Console.WriteLine();
                         break;
+
                     case 5:
                         running = false;
                         break;
+
                     default:
                         Console.WriteLine("Opcao inválida, digite novamente a opcao desejada.");
                         Console.WriteLine();
@@ -328,6 +363,57 @@ namespace Crud_Paciente_BD
                         Console.WriteLine("-------------------------------------------");
                         Console.WriteLine();
 
+                        Console.WriteLine("Listando pacientes: ");
+                        int index = 1;
+                        if (paciente.GetPacientes().Any())
+                        {
+                            Console.WriteLine("PACIENTES CADASTRADOS: ");
+                            Console.WriteLine();
+                            foreach (var item in (paciente.GetPacientes()))
+                            {
+                                Console.WriteLine("**************");
+                                Console.WriteLine($"* CADASTRO {index++} *");
+                                Console.WriteLine("**************");
+                                Console.WriteLine("DADOS DO PACIENTE: ");
+                                Console.WriteLine($"ID: {item.GetId_paciente()} | NOME: {item.GetNome()} ");
+                                Console.WriteLine("=============================================================================================");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ainda não há PACIENTES cadastrados, por favor cadastre um PACIENTE antes de prosseguir");
+                            break;
+                        }
+
+                        Console.WriteLine();
+                        Console.WriteLine("----------------------------------------------------------------------------------------------");
+                        Console.WriteLine();
+
+                        Console.WriteLine("Listando Médicos: ");
+                        index = 1;
+                        if (paciente.GetPacientes().Any())
+                        {
+                            Console.WriteLine("MEDICOS CADASTRADOS: ");
+                            Console.WriteLine();
+                            foreach (var item in (medico.GetMedicos()))
+                            {
+                                Console.WriteLine("**************");
+                                Console.WriteLine($"* CADASTRO {index++} *");
+                                Console.WriteLine("**************");
+                                Console.WriteLine("DADOS DO MEDICO: ");
+                                Console.WriteLine($"ID: {item.GetID_medico()} | NOME: {item.GetNome()} ");
+                                Console.WriteLine("=============================================================================================");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ainda não há MÉDICOS cadastrados, por favor cadastre um MÉDICO antes de prosseguir");
+                            break;
+                        }
+
+                        Console.WriteLine("\n\n");
+                        Console.WriteLine("Insira os dados da consulta: \nCaso não saiba seu id, ou do médico, confira na listagem acima");
+                        Console.WriteLine();
                         //Dados da consulta
                         Console.Write("DATA DA CONSULTA: ");
                         consulta.SetDt_Consulta(Console.ReadLine());
@@ -353,6 +439,85 @@ namespace Crud_Paciente_BD
                         break;
                 }
             }while (running);
+            
+        }
+
+        static void RemoverRegistros()
+        {
+            bool runnig = true;
+            int opcao = 0;
+            int excluir = 0;
+
+            Paciente paciente = new Paciente();
+            Medico medico = new Medico();
+            Consulta consulta = new Consulta();
+
+            
+
+            do
+            {                
+                Console.WriteLine();
+                Console.WriteLine("Por informe o que deseja excluir \nLembramos que essa ação não poderá ser desfeita...");
+                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine();
+
+                Console.WriteLine("Digite a opção desejada: \n" +
+                "1 - Deletar pacientes \n" +
+                "2 - Deletar Medicos \n" +
+                "3 - Deletar Consultas \n" +
+                "5 - Retornar ao menu principal");
+                Console.WriteLine();
+
+                opcao = int.Parse(Console.ReadLine());
+
+                switch (opcao)
+                {
+                    case 1:
+                        Console.WriteLine("Tem certeza que deseja prosseguir? \n1 - Sim \n2 - Não");
+                        opcao = int.Parse(Console.ReadLine());
+                        if(opcao == 1)
+                        {
+                            Console.WriteLine("Informe o cadastro que deseja remover conforme IDs abaixo: ");
+                            Console.WriteLine();
+                            Console.WriteLine("Listando pacientes: ");
+                            int index = 1;
+                            if (paciente.GetPacientes().Any())
+                            {
+                                Console.WriteLine("PACIENTES CADASTRADOS: ");
+                                Console.WriteLine();
+                                foreach (var item in (paciente.GetPacientes()))
+                                {
+                                    Console.WriteLine("**************");
+                                    Console.WriteLine($"* CADASTRO {index++} *");
+                                    Console.WriteLine("**************");
+                                    Console.WriteLine("DADOS DO PACIENTE: ");
+                                    Console.WriteLine($"ID: {item.GetId_paciente()} | NOME: {item.GetNome()} ");
+                                    Console.WriteLine("=============================================================================================");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ainda não há PACIENTES cadastrados, por favor cadastre um PACIENTE antes de prosseguir");
+                                //break;
+                            }
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("Informe o cadastro que deseja remover conforme IDs acima: ");
+                            Console.WriteLine();
+                            excluir = int.Parse(Console.ReadLine());
+                            paciente.ExcluirPaciente(excluir);
+
+                            Console.WriteLine();
+                            Console.WriteLine("Paciente excluido com sucesso!");
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        break;
+                }
+            } while (runnig);
+
             
         }
     }
