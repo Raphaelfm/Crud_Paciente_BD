@@ -84,6 +84,7 @@ namespace Crud_Paciente_BD
 
         static void Relatorios()
         {
+            Console.Clear();
             Paciente paciente = new Paciente();
             Endereco endereco = new Endereco();
             Medico medico = new Medico();
@@ -108,6 +109,7 @@ namespace Crud_Paciente_BD
                 switch (opcao)
                 {
                     case 1:
+                        Console.Clear();
                         Console.WriteLine("Listando pacientes: ");
                         index = 1;
                         if (paciente.GetPacientes().Any())
@@ -138,6 +140,7 @@ namespace Crud_Paciente_BD
                         break;
 
                     case 2:
+                        Console.Clear();
                         Console.WriteLine("Listando Medicos: ");
                         index = 1;
 
@@ -168,6 +171,7 @@ namespace Crud_Paciente_BD
                         break;
 
                     case 3:
+                        Console.Clear();
                         Console.WriteLine("Listando Consultas: ");
                         index = 1;
 
@@ -229,6 +233,7 @@ namespace Crud_Paciente_BD
 
                     case 5:
                         running = false;
+                        Console.Clear();
                         break;
 
                     default:
@@ -242,6 +247,7 @@ namespace Crud_Paciente_BD
 
         static void InserirRegistros()
         {
+            Console.Clear();
             Paciente paciente = new Paciente();
             Endereco endereco = new Endereco();
             Medico medico = new Medico();
@@ -444,13 +450,16 @@ namespace Crud_Paciente_BD
 
         static void RemoverRegistros()
         {
+            Console.Clear();
             bool runnig = true;
             int opcao = 0;
             int excluir = 0;
+            int idEndereco = 0;
 
             Paciente paciente = new Paciente();
             Medico medico = new Medico();
             Consulta consulta = new Consulta();
+            Endereco endereco = new Endereco();
 
             
 
@@ -458,7 +467,7 @@ namespace Crud_Paciente_BD
             {                
                 Console.WriteLine();
                 Console.WriteLine("Por informe o que deseja excluir \nLembramos que essa ação não poderá ser desfeita...");
-                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine("-------------------------------------------------------------------");
                 Console.WriteLine();
 
                 Console.WriteLine("Digite a opção desejada: \n" +
@@ -473,6 +482,7 @@ namespace Crud_Paciente_BD
                 switch (opcao)
                 {
                     case 1:
+                        Console.Clear();
                         Console.WriteLine("Tem certeza que deseja prosseguir? \n1 - Sim \n2 - Não");
                         opcao = int.Parse(Console.ReadLine());
                         if(opcao == 1)
@@ -498,22 +508,145 @@ namespace Crud_Paciente_BD
                             else
                             {
                                 Console.WriteLine("Ainda não há PACIENTES cadastrados, por favor cadastre um PACIENTE antes de prosseguir");
-                                //break;
+                                break;
                             }
                             Console.WriteLine();
                             Console.WriteLine();
                             Console.WriteLine("Informe o cadastro que deseja remover conforme IDs acima: ");
                             Console.WriteLine();
                             excluir = int.Parse(Console.ReadLine());
+
+                            int temp = consulta.PegarIdPacienteConsulta(excluir);
+                            if (temp > 0)
+                            {
+                                consulta.ExcluirConsultaPorPaciente(excluir);
+                            }                            
+                            endereco.ExcluirEndereco(paciente.PegarIdEnderecoPaciente(excluir));
                             paciente.ExcluirPaciente(excluir);
 
                             Console.WriteLine();
                             Console.WriteLine("Paciente excluido com sucesso!");
+
+                            Console.Write("Pressione qualquer tecla para continuar: ");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
                         else
                         {
                             break;
                         }
+                        break;
+
+                    case 2:
+                        Console.Clear();
+                        Console.WriteLine("Tem certeza que deseja prosseguir? \n1 - Sim \n2 - Não");
+                        opcao = int.Parse(Console.ReadLine());
+                        if (opcao == 1)
+                        {
+                            Console.WriteLine("Informe o cadastro que deseja remover conforme IDs abaixo: ");
+                            Console.WriteLine();
+                            Console.WriteLine("Listando medicos: ");
+                            int index = 1;
+                            if (medico.GetMedicos().Any())
+                            {
+                                Console.WriteLine("MEDICOS CADASTRADOS: ");
+                                Console.WriteLine();
+                                foreach (var item in (medico.GetMedicos()))
+                                {
+                                    Console.WriteLine("**************");
+                                    Console.WriteLine($"* CADASTRO {index++} *");
+                                    Console.WriteLine("**************");
+                                    Console.WriteLine("DADOS DO MEDICO: ");
+                                    Console.WriteLine($"ID: {item.GetID_medico()} | NOME: {item.GetNome()} ");
+                                    Console.WriteLine("=============================================================================================");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ainda não há MÉDICOS cadastrados, por favor cadastre um MEDICO antes de prosseguir");
+                                break;
+                            }
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("Informe o cadastro que deseja remover conforme IDs acima: ");
+                            Console.WriteLine();
+                            excluir = int.Parse(Console.ReadLine());
+
+                            int temp = consulta.PegarIdMedicoConsulta(excluir);
+                            if (temp > 0)
+                            {
+                                consulta.ExcluirConsultaPorMedico(excluir);
+                            }
+                            endereco.ExcluirEndereco(medico.PegarIdEnderecoMedico(excluir));
+                            medico.ExcluirMedico(excluir);
+
+                            Console.WriteLine();
+                            Console.WriteLine("Medico excluido com sucesso!");
+
+                            Console.Write("Pressione qualquer tecla para continuar: ");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        break;
+
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine("Tem certeza que deseja prosseguir? \n1 - Sim \n2 - Não");
+                        opcao = int.Parse(Console.ReadLine());
+                        if (opcao == 1)
+                        {
+                            Console.WriteLine("Informe a CONSULTA MÉDICA que deseja remover conforme IDs abaixo: ");
+                            Console.WriteLine();
+                            Console.WriteLine("Listando consultas: ");
+                            int index = 1;
+                            if (consulta.GetConsultas().Any())
+                            {
+                                Console.WriteLine("MEDICOS CADASTRADOS: ");
+                                Console.WriteLine();
+                                foreach (var item in (consulta.GetConsultas()))
+                                {
+                                    Console.WriteLine("**************");
+                                    Console.WriteLine($"* CADASTRO {index++} *");
+                                    Console.WriteLine("**************");
+                                    Console.WriteLine("DADOS DA CONSULTA: ");
+                                    Console.WriteLine($"ID: {item.GetID_consulta()} | NOME MEDICO: {item.GetNome_medico()} \n" +
+                                        $"NOME PACIENTE: {item.GetNome_paciente()} | DATA DA CONSULTA: {item.GetDt_Consulta()}");
+                                    Console.WriteLine("=============================================================================================");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ainda não há CONSULTAS cadastradas, por favor cadastre um CONSULTA antes de prosseguir");
+                                break;
+                            }
+                            Console.WriteLine();
+                            Console.WriteLine();
+                            Console.WriteLine("Informe a CONSULTA que deseja remover conforme IDs acima: ");
+                            Console.WriteLine();
+                            excluir = int.Parse(Console.ReadLine());
+                            
+                            consulta.ExcluirConsulta(excluir);
+
+                            Console.WriteLine();
+                            Console.WriteLine("Consulta excluída com sucesso!");
+
+                            Console.Write("Pressione qualquer tecla para continuar: ");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        break;
+
+                    case 5:
+                        runnig = false;
+                        Console.Clear();
                         break;
                 }
             } while (runnig);

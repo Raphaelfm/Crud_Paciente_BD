@@ -85,11 +85,30 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
 
-        // ---EXCLUIR---
-        public void ExcluirConsulta()
+        // ---EXCLUIR POR ID CONSULTA---
+        public void ExcluirConsulta(int id)
         {
+            this.SetID_consulta(id);
             this.banco.conectar();
-            this.banco.nonQuery("Delete from paciente where id_medico ='" + this.GetID_consulta() + "'");
+            this.banco.nonQuery("Delete from consulta where id_consulta ='" + this.GetID_consulta() + "'");
+            this.banco.close();
+        }
+
+        // ---EXCLUIR POR PACIENTE---
+        public void ExcluirConsultaPorPaciente(int id)
+        {
+            this.SetId_paciente(id);
+            this.banco.conectar();
+            this.banco.nonQuery("Delete from consulta where id_paciente ='" + this.GetId_paciente() + "'");
+            this.banco.close();
+        }
+
+        // ---EXCLUIR POR MEDICO---
+        public void ExcluirConsultaPorMedico(int id)
+        {
+            this.SetId_medico(id);
+            this.banco.conectar();
+            this.banco.nonQuery("Delete from consulta where id_medico ='" + this.GetId_medico() + "'");
             this.banco.close();
         }
 
@@ -175,6 +194,30 @@ namespace Crud_Paciente_BD.Models
             }
 
             return lista;
+        }
+
+        public int PegarIdPacienteConsulta(int id)
+        {
+            this.banco.conectar();
+            int idExcluir = 0;
+            var temp = this.banco.Query("select c.id_paciente, count(c.id_paciente) from consulta c where c.id_paciente = " + id + ";");
+            while (temp.Read())
+            {
+                idExcluir = temp.GetInt32(1);
+            }
+            return idExcluir;
+        }
+
+        public int PegarIdMedicoConsulta(int id)
+        {
+            this.banco.conectar();
+            int idExcluir = 0;
+            var temp = this.banco.Query("select c.id_medico, count(c.id_medico) from consulta c where c.id_medico = " + id + ";");
+            while (temp.Read())
+            {
+                idExcluir = temp.GetInt32(1);
+            }
+            return idExcluir;
         }
 
     }
