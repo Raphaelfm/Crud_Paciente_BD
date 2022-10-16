@@ -95,8 +95,9 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         //---EXCLUIR---
-        public void excluirEndereco()
+        public void ExcluirEndereco(int id)
         {
+            this.SetId_endereco(id);
             this.banco.conectar();
             this.banco.nonQuery("Delete from endereco where id_endereco = '" + this.GetId_endereco() + "';");
             this.banco.close();

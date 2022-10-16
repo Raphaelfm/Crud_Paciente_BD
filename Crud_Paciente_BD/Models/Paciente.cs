@@ -101,8 +101,9 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         // ---EXCLUIR---
-        public void ExcluirPaciente()
+        public void ExcluirPaciente(int id)
         {
+            this.SetId_paciente(id);
             this.banco.conectar();
             this.banco.nonQuery("Delete from paciente where id_paciente ='" + this.GetId_paciente() + "'");
             this.banco.close();
@@ -163,6 +164,18 @@ namespace Crud_Paciente_BD.Models
             }
 
             return lista;
-        }        
+        }
+
+        public int PegarIdEnderecoPaciente(int id)
+        {
+            this.banco.conectar();
+            int idExcluir = 0;
+            var temp = this.banco.Query("select p.id_endereco from paciente p where p.id_paciente = " + id +";");
+            while (temp.Read())
+            {
+                idExcluir = temp.GetInt32(0);
+            }
+            return idExcluir;
+        }
     }
 }

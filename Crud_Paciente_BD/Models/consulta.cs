@@ -17,6 +17,7 @@ namespace Crud_Paciente_BD.Models
         public int id_paciente;
         public string nome_paciente;
         public string nome_medico;
+        public int totais;
 
         public Consulta()
         {
@@ -27,6 +28,7 @@ namespace Crud_Paciente_BD.Models
             this.id_paciente = 0;
             this.nome_paciente = "";
             this.nome_medico = "";
+            this.totais = 0;
 
             this.banco = new ConexaoBanco();
         }
@@ -40,7 +42,8 @@ namespace Crud_Paciente_BD.Models
         public void SetId_medico(int novo) { this.id_medico = novo; }
         public void SetId_paciente(int novo) { this.id_paciente = novo; }
         public void SetNome_medico(string novo) { this.nome_medico = novo; }
-        public void SetNome_paciente(string novo) { this.nome_paciente = novo; }        
+        public void SetNome_paciente(string novo) { this.nome_paciente = novo; }    
+        public void SetTotais(int novo) { this.totais = novo; }
 
         public int GetID_consulta() { return this.id_consulta; }
         public string GetDescricao_consulta() { return this.descricao_consulta; }
@@ -49,6 +52,7 @@ namespace Crud_Paciente_BD.Models
         public int GetId_paciente() { return this.id_paciente; }
         public string GetNome_paciente() { return this.nome_paciente;}
         public string GetNome_medico() { return this.nome_medico;}
+        public int GetTotais() { return this.totais; }
 
         // CRIAR METODO PARA BUSCAR CONSULTAS
         public MySqlDataReader ListarConsultas()
@@ -81,11 +85,30 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
 
-        // ---EXCLUIR---
-        public void ExcluirConsulta()
+        // ---EXCLUIR POR ID CONSULTA---
+        public void ExcluirConsulta(int id)
         {
+            this.SetID_consulta(id);
             this.banco.conectar();
-            this.banco.nonQuery("Delete from paciente where id_medico ='" + this.GetID_consulta() + "'");
+            this.banco.nonQuery("Delete from consulta where id_consulta ='" + this.GetID_consulta() + "'");
+            this.banco.close();
+        }
+
+        // ---EXCLUIR POR PACIENTE---
+        public void ExcluirConsultaPorPaciente(int id)
+        {
+            this.SetId_paciente(id);
+            this.banco.conectar();
+            this.banco.nonQuery("Delete from consulta where id_paciente ='" + this.GetId_paciente() + "'");
+            this.banco.close();
+        }
+
+        // ---EXCLUIR POR MEDICO---
+        public void ExcluirConsultaPorMedico(int id)
+        {
+            this.SetId_medico(id);
+            this.banco.conectar();
+            this.banco.nonQuery("Delete from consulta where id_medico ='" + this.GetId_medico() + "'");
             this.banco.close();
         }
 
@@ -134,6 +157,67 @@ namespace Crud_Paciente_BD.Models
             }
 
             return lista;
+        }
+
+        public MySqlDataReader ListarConsultasPorMedico()
+        {
+            this.banco.conectar();
+            return this.banco.Query("select m.id_medico, m.nome, count(c.id_consulta) from medico m " +
+                "left join consulta c on m.id_medico = c.id_medico " +
+                "group by m.nome; ");
+        }
+
+        public List<Consulta> ConsultasPorMedicos()
+        {
+            List<Consulta> lista = new List<Consulta>();
+            var consultas = ListarConsultasPorMedico();
+
+            try
+            {
+                while (consultas.HasRows)
+                {
+                    while (consultas.Read())
+                    {
+                        Consulta listaConsulta = new Consulta();
+                        listaConsulta.SetId_medico(consultas.GetInt32(0));
+                        listaConsulta.SetNome_medico(consultas.GetString(1));
+                        listaConsulta.SetTotais(consultas.GetInt32(2));
+
+                        lista.Add(listaConsulta);
+                    }
+                    consultas.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
+
+        public int PegarIdPacienteConsulta(int id)
+        {
+            this.banco.conectar();
+            int idExcluir = 0;
+            var temp = this.banco.Query("select c.id_paciente, count(c.id_paciente) from consulta c where c.id_paciente = " + id + ";");
+            while (temp.Read())
+            {
+                idExcluir = temp.GetInt32(1);
+            }
+            return idExcluir;
+        }
+
+        public int PegarIdMedicoConsulta(int id)
+        {
+            this.banco.conectar();
+            int idExcluir = 0;
+            var temp = this.banco.Query("select c.id_medico, count(c.id_medico) from consulta c where c.id_medico = " + id + ";");
+            while (temp.Read())
+            {
+                idExcluir = temp.GetInt32(1);
+            }
+            return idExcluir;
         }
 
     }

@@ -80,8 +80,9 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---EXCLUIR---
-        public void ExcluirMedico()
+        public void ExcluirMedico(int id)
         {
+            this.SetId_medico(id);
             this.banco.conectar();
             this.banco.nonQuery("Delete from medico where id_medico ='" + this.GetID_medico() + "'");
             this.banco.close();
@@ -146,8 +147,17 @@ namespace Crud_Paciente_BD.Models
 
         }
 
-
-
+        public int PegarIdEnderecoMedico(int id)
+        {
+            this.banco.conectar();
+            int idExcluir = 0;
+            var temp = this.banco.Query("select m.id_endereco from medico m where m.id_medico = " + id + ";");
+            while (temp.Read())
+            {
+                idExcluir = temp.GetInt32(0);
+            }
+            return idExcluir;
+        }
 
     }
 }
