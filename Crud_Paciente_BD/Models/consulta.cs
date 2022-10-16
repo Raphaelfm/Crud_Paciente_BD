@@ -17,6 +17,7 @@ namespace Crud_Paciente_BD.Models
         public int id_paciente;
         public string nome_paciente;
         public string nome_medico;
+        public int totais;
 
         public Consulta()
         {
@@ -27,6 +28,7 @@ namespace Crud_Paciente_BD.Models
             this.id_paciente = 0;
             this.nome_paciente = "";
             this.nome_medico = "";
+            this.totais = 0;
 
             this.banco = new ConexaoBanco();
         }
@@ -40,7 +42,8 @@ namespace Crud_Paciente_BD.Models
         public void SetId_medico(int novo) { this.id_medico = novo; }
         public void SetId_paciente(int novo) { this.id_paciente = novo; }
         public void SetNome_medico(string novo) { this.nome_medico = novo; }
-        public void SetNome_paciente(string novo) { this.nome_paciente = novo; }        
+        public void SetNome_paciente(string novo) { this.nome_paciente = novo; }    
+        public void SetTotais(int novo) { this.totais = novo; }
 
         public int GetID_consulta() { return this.id_consulta; }
         public string GetDescricao_consulta() { return this.descricao_consulta; }
@@ -49,6 +52,7 @@ namespace Crud_Paciente_BD.Models
         public int GetId_paciente() { return this.id_paciente; }
         public string GetNome_paciente() { return this.nome_paciente;}
         public string GetNome_medico() { return this.nome_medico;}
+        public int GetTotais() { return this.totais; }
 
         // CRIAR METODO PARA BUSCAR CONSULTAS
         public MySqlDataReader ListarConsultas()
@@ -122,6 +126,43 @@ namespace Crud_Paciente_BD.Models
                         listaConsulta.SetId_paciente(consultas.GetInt32(4));
                         listaConsulta.SetNome_medico(consultas.GetString(5));
                         listaConsulta.SetNome_paciente(consultas.GetString(6));
+
+                        lista.Add(listaConsulta);
+                    }
+                    consultas.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
+
+        public MySqlDataReader ListarConsultasPorMedico()
+        {
+            this.banco.conectar();
+            return this.banco.Query("select m.id_medico, m.nome, count(c.id_consulta) from medico m " +
+                "left join consulta c on m.id_medico = c.id_medico " +
+                "group by m.nome; ");
+        }
+
+        public List<Consulta> ConsultasPorMedicos()
+        {
+            List<Consulta> lista = new List<Consulta>();
+            var consultas = ListarConsultasPorMedico();
+
+            try
+            {
+                while (consultas.HasRows)
+                {
+                    while (consultas.Read())
+                    {
+                        Consulta listaConsulta = new Consulta();
+                        listaConsulta.SetId_medico(consultas.GetInt32(0));
+                        listaConsulta.SetNome_medico(consultas.GetString(1));
+                        listaConsulta.SetTotais(consultas.GetInt32(2));
 
                         lista.Add(listaConsulta);
                     }
