@@ -65,8 +65,9 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---ALTERAR---
-        public void AlterarConsulta()
+        public void AlterarConsulta(int id)
         {
+            this.SetID_consulta(id);
             this.banco.conectar();
             this.banco.nonQuery("UPDATE consulta set descricao_consulta='" + this.GetDescricao_consulta() +
                 "' where id_consulta ='" + this.GetID_consulta() + "';");
@@ -220,5 +221,42 @@ namespace Crud_Paciente_BD.Models
             return idExcluir;
         }
 
+        public MySqlDataReader ListarConsultasPorId(int id)
+        {
+            this.banco.conectar();
+            return this.banco.Query("select c.id_consulta, c.id_medico, c.id_paciente, c.descricao_consulta," +
+                " c.dt_consulta from consulta c where c.id_consulta = " + id + "; ");
+        }
+
+        public List<Consulta> GetConsultasPorId(int id)
+        {
+            List<Consulta> lista = new List<Consulta>();
+            var consultas = ListarConsultasPorId(id);
+
+            try
+            {
+                while (consultas.HasRows)
+                {
+                    while (consultas.Read())
+                    {
+                        Consulta listaConsulta = new Consulta();
+
+                        listaConsulta.SetID_consulta(consultas.GetInt32(0));
+                        listaConsulta.SetId_medico(consultas.GetInt32(1));
+                        listaConsulta.SetId_paciente(consultas.GetInt32(2));
+                        listaConsulta.SetDescricao_consulta(consultas.GetString(3));
+
+                        lista.Add(listaConsulta);
+                    }
+                    consultas.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
     }
 }
