@@ -88,8 +88,9 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         // ---ALTERAR---
-        public void AlterarPaciente()
+        public void AlterarPaciente(int id)
         {
+            this.SetId_paciente(id);
             this.banco.conectar();
             this.banco.nonQuery("UPDATE paciente set nome='" + this.GetNome() +
                 "', dt_nasc='" + this.GetDt_nasc() +
@@ -176,6 +177,60 @@ namespace Crud_Paciente_BD.Models
                 idExcluir = temp.GetInt32(0);
             }
             return idExcluir;
+        }
+
+        public MySqlDataReader ListarPacientePorId(int id)
+        {
+            this.banco.conectar();
+            return this.banco.Query("select p.id_paciente, p.Nome, p.dt_nasc,p.sexo,p.CPF, p.celular, p.email," +
+                " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from paciente p " +
+                "join endereco e on p.id_endereco = e.id_endereco " +
+                "where p.id_paciente = " + id + "; ");
+        }
+
+        public List<Paciente> GetPacientesPorId(int id)
+        {
+            List<Paciente> lista = new List<Paciente>();
+
+            this.banco.conectar();
+            var pacientes = ListarPacientePorId(id);
+
+            try
+            {
+                while (pacientes.HasRows)
+                {
+                    while (pacientes.Read())
+                    {
+                        Paciente listaPaciente = new Paciente();
+
+                        listaPaciente.SetId_paciente(pacientes.GetInt32(0));
+                        listaPaciente.SetNome(pacientes.GetString(1));
+                        listaPaciente.SetDt_nasc(pacientes.GetString(2));
+                        listaPaciente.SetSexo(pacientes.GetString(3));
+                        listaPaciente.SetCpf(pacientes.GetString(4));
+                        listaPaciente.SetCelular(pacientes.GetString(5));
+                        listaPaciente.SetEmail(pacientes.GetString(6));
+                        listaPaciente.SetId_endereco(pacientes.GetInt32(7));
+                        listaPaciente.SetLogradouro(pacientes.GetString(8));
+                        listaPaciente.SetNumero(pacientes.GetString(9));
+                        listaPaciente.SetComplemento(pacientes.GetString(10));
+                        listaPaciente.SetBairro(pacientes.GetString(11));
+                        listaPaciente.SetMunicipio(pacientes.GetString(12));
+                        listaPaciente.SetUf(pacientes.GetString(13));
+                        listaPaciente.SetCep(pacientes.GetString(14));
+
+                        lista.Add(listaPaciente);
+                    }
+                    pacientes.NextResult();
+                }
+
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
         }
     }
 }

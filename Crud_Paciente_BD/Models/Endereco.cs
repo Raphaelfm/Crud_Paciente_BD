@@ -80,10 +80,11 @@ namespace Crud_Paciente_BD.Models
             this.banco.close();
         }
         //---ALTERAR---
-        public void alterarEndereco()
+        public void AlterarEndereco(int id)
         {
+            this.SetId_endereco(id);
             this.banco.conectar();
-            this.banco.nonQuery("UPDATE `basedados_pacientes`.`endereco` SET " +
+            this.banco.nonQuery("UPDATE endereco SET " +
                 "`Logradouro` = '" + this.GetLogradouro() +
                 "', `Numero` = '" + this.GetNumero() +
                 "', `complemento` = '" + this.GetComplemento() +
@@ -120,8 +121,99 @@ namespace Crud_Paciente_BD.Models
             {
                 contagem = temp.GetInt32(0);
             }
-            return contagem;
-            
+            return contagem;            
+        }
+
+        public MySqlDataReader ListarEnderecosPorIdPaciente(int id)
+        {
+            this.banco.conectar();
+            return this.banco.Query("select e.id_endereco, e.logradouro, e.numero, e.complemento, e.bairro, e.municipio, e.uf, e.cep from endereco e " +
+                "inner join paciente p on e.id_endereco = p.id_endereco " +
+                "where p.id_paciente = " + id + ";");
+        }
+
+        public List<Endereco> GetEnderecosPorIdPaciente(int id)
+        {
+            List<Endereco> lista = new List<Endereco>();
+
+            this.banco.conectar();
+            var enderecos = ListarEnderecosPorIdPaciente(id);
+
+            try
+            {
+                while (enderecos.HasRows)
+                {
+                    while (enderecos.Read())
+                    {
+                        Endereco listaEndereco = new Endereco();
+
+                        listaEndereco.SetId_endereco(enderecos.GetInt32(0));
+                        listaEndereco.SetLogradouro(enderecos.GetString(1));
+                        listaEndereco.SetNumero(enderecos.GetString(2));
+                        listaEndereco.SetComplemento(enderecos.GetString(3));
+                        listaEndereco.SetBairro(enderecos.GetString(4));
+                        listaEndereco.SetMunicipio(enderecos.GetString(5));
+                        listaEndereco.SetUf(enderecos.GetString(6));
+                        listaEndereco.SetCep(enderecos.GetString(7));
+
+                        lista.Add(listaEndereco);
+                    }
+                    enderecos.NextResult();
+                }
+
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+        }
+
+        public MySqlDataReader ListarEnderecosPorIdMedico(int id)
+        {
+            this.banco.conectar();
+            return this.banco.Query("select e.id_endereco, e.logradouro, e.numero, e.complemento, e.bairro, e.municipio, e.uf, e.cep from endereco e " +
+                "inner join medico m on e.id_endereco = p.id_endereco " +
+                "where m.id_medico = " + id + ";");
+        }
+
+        public List<Endereco> GetEnderecosPorIdMedico(int id)
+        {
+            List<Endereco> lista = new List<Endereco>();
+
+            this.banco.conectar();
+            var enderecos = ListarEnderecosPorIdPaciente(id);
+
+            try
+            {
+                while (enderecos.HasRows)
+                {
+                    while (enderecos.Read())
+                    {
+                        Endereco listaEndereco = new Endereco();
+
+                        listaEndereco.SetId_endereco(enderecos.GetInt32(0));
+                        listaEndereco.SetLogradouro(enderecos.GetString(1));
+                        listaEndereco.SetNumero(enderecos.GetString(2));
+                        listaEndereco.SetComplemento(enderecos.GetString(3));
+                        listaEndereco.SetBairro(enderecos.GetString(4));
+                        listaEndereco.SetMunicipio(enderecos.GetString(5));
+                        listaEndereco.SetUf(enderecos.GetString(6));
+                        listaEndereco.SetCep(enderecos.GetString(7));
+
+                        lista.Add(listaEndereco);
+                    }
+                    enderecos.NextResult();
+                }
+
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
         }
     }
 }

@@ -54,24 +54,45 @@ namespace Crud_Paciente_BD.Models
         }
 
         // ---ALTERAR---
-        public void AlterarMedico()
+        public void AlterarMedico(int id)
         {
+            this.SetId_medico(id);
             this.banco.conectar();
             this.banco.nonQuery("UPDATE medico set nome='" + this.GetNome() +
                 "', crm='" + this.GetCrm() +
                 "', celular='" + this.GetCelular() +
-                "', endereco_medico='" + this.GetId_Endereco() +
-                "', celular='" + this.GetCelular() +
                 "' where id_medico ='" + this.GetID_medico() + "';");
             this.banco.close();
+        }
+
+        public void AlterarEnderecoMedico(int id)
+        {
+            this.SetId_endereco(id);
+            this.banco.conectar();
+            this.banco.nonQuery("UPDATE endereco SET " +
+                "`Logradouro` = '" + this.GetLogradouro() +
+                "', `Numero` = '" + this.GetNumero() +
+                "', `complemento` = '" + this.GetComplemento() +
+                "', `Bairro` = '" + this.GetBairro() +
+                "', `municipio` = '" + this.GetMunicipio() +
+                "', `UF` = '" + this.GetUf() +
+                "', `CEP` = '" + this.GetCep() +
+                "' WHERE (`id_endereco` = '" + this.GetId_endereco() + "')");
+            this.banco.close();
+        }
+
+        public void AlterarConsultaMedico(int id)
+        {
+            this.banco.conectar();
+            this.banco.nonQuery("update consulta set id_medico = 1 where id_medico = "+ id +";");
         }
 
         // ---INSERIR---
         public void CadastrarMedico()
         {
             this.banco.conectar();
-            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`medico` (`nome`, `crm`,`celular`," +
-                "`id_endereco`) VALUES ('" +                
+            this.banco.nonQuery("INSERT INTO medico (nome, crm, celular," +
+                " id_endereco) VALUES ('" +                
                 this.GetNome() + "', '" +
                 this.GetCrm() + "', '" +
                 this.GetCelular() + "', '" +
@@ -102,7 +123,7 @@ namespace Crud_Paciente_BD.Models
             return contagem;
         }
 
-        //LISTAR O PACIENTE NA TELA
+        //LISTAR O MEDICO NA TELA
         public List<Medico> GetMedicos()
         {
 
@@ -159,5 +180,59 @@ namespace Crud_Paciente_BD.Models
             return idExcluir;
         }
 
+        public MySqlDataReader ListarMedicosPorId(int id)
+        {
+            this.banco.conectar();
+            return this.banco.Query("select m.id_medico, m.nome, m.crm ,m.celular ," +
+                " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from medico m " +
+                "join endereco e on m.Id_endereco = e.id_endereco " +
+                "where m.id_medico = "+ id +"; ");
+        }
+
+        //LISTAR O MEDICO NA TELA POR ID
+        public List<Medico> GetMedicosPorId(int id)
+        {
+
+            List<Medico> lista = new List<Medico>();
+
+
+            this.banco.conectar();
+            var medicos = ListarMedicosPorId(id);
+
+            try
+            {
+                while (medicos.HasRows)
+                {
+                    while (medicos.Read())
+                    {
+                        Medico listaMedico = new Medico();
+
+                        listaMedico.SetId_medico(medicos.GetInt32(0));
+                        listaMedico.SetNome(medicos.GetString(1));
+                        listaMedico.SetCrm(medicos.GetString(2));
+                        listaMedico.SetCelular(medicos.GetString(3));
+                        listaMedico.SetId_Endereco(medicos.GetInt32(4));
+                        listaMedico.SetLogradouro(medicos.GetString(5));
+                        listaMedico.SetNumero(medicos.GetString(6));
+                        listaMedico.SetComplemento(medicos.GetString(7));
+                        listaMedico.SetBairro(medicos.GetString(8));
+                        listaMedico.SetMunicipio(medicos.GetString(9));
+                        listaMedico.SetUf(medicos.GetString(10));
+                        listaMedico.SetCep(medicos.GetString(11));
+
+
+                        lista.Add(listaMedico);
+                    }
+                    medicos.NextResult();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return lista;
+
+        }
     }
 }
