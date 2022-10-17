@@ -22,7 +22,7 @@ namespace Crud_Paciente_BD
                 Console.WriteLine();
                 opcao = int.Parse(Console.ReadLine());
                 Console.WriteLine();
-
+                
                 switch (opcao)
                 {
                     case 1:
@@ -55,7 +55,10 @@ namespace Crud_Paciente_BD
             Medico medico = new Medico();
             Consulta consulta = new Consulta();
             Endereco endereco = new Endereco();
-
+            paciente.CorrigeNull();
+            medico.CorrigeNull();
+            endereco.CorrigeNulos();
+            consulta.CorrigeNull();
 
             Console.WriteLine("##################################################\n");
 
@@ -445,6 +448,8 @@ namespace Crud_Paciente_BD
                         consulta.SetDescricao_consulta(Console.ReadLine());
 
                         consulta.CadastrarConsulta();
+
+                        consulta.CorrigeNull();
 
                         Console.WriteLine("Consulta cadastrada com sucesso!! \n\nPressione qualquer tecla para continuar.");
                         Console.ReadKey();
