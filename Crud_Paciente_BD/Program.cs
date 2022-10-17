@@ -318,6 +318,7 @@ namespace Crud_Paciente_BD
                         paciente.CadastrarPaciente();
 
                         endereco.CorrigeNulos();
+                        paciente.CorrigeNull();
 
                         Console.WriteLine("Paciente cadastrado com sucesso!! \n\nPressione qualquer tecla para continuar.");
                         Console.ReadKey();
@@ -363,6 +364,10 @@ namespace Crud_Paciente_BD
                         medico.SetId_endereco(endereco.GetId_endereco());
 
                         medico.CadastrarMedico();
+
+                        endereco.CorrigeNulos();
+                        medico.CorrigeNull();
+
                         Console.WriteLine("Medico cadastrado com sucesso!! \n\nPressione qualquer tecla para continuar.");
                         Console.ReadKey();
                         Console.Clear();

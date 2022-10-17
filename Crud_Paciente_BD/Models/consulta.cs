@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System.Data.OracleClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +30,10 @@ namespace Crud_Paciente_BD.Models
             this.nome_medico = "";
             this.totais = 0;
 
-            this.banco = new ConexaoBanco();
+            this.banco = new ConexaoOracle();
         }
 
-        public ConexaoBanco banco;
+        public ConexaoOracle banco;
 
         //gets e sets
         public void SetID_consulta(int novo) { this.id_consulta = novo; }
@@ -55,13 +55,13 @@ namespace Crud_Paciente_BD.Models
         public int GetTotais() { return this.totais; }
 
         // CRIAR METODO PARA BUSCAR CONSULTAS
-        public MySqlDataReader ListarConsultas()
+        public OracleDataReader ListarConsultas()
         {
             this.banco.conectar();
             return this.banco.Query("select c.id_consulta, c.descricao_consulta, c.dt_consulta, " +
                 "m.id_medico, p.id_paciente,  m.nome, p.nome from consulta c " +                
                 "join medico m on c.id_medico = m.id_medico " +
-                "join paciente p on c.id_paciente = p.id_paciente; ");
+                "join paciente p on c.id_paciente = p.id_paciente");
         }
 
         // ---ALTERAR---
@@ -70,7 +70,7 @@ namespace Crud_Paciente_BD.Models
             this.SetID_consulta(id);
             this.banco.conectar();
             this.banco.nonQuery("UPDATE consulta set descricao_consulta='" + this.GetDescricao_consulta() +
-                "' where id_consulta ='" + this.GetID_consulta() + "';");
+                "' where id_consulta ='" + this.GetID_consulta() + "'");
             this.banco.close();
         }
 
@@ -78,11 +78,11 @@ namespace Crud_Paciente_BD.Models
         public void CadastrarConsulta()
         {
             this.banco.conectar();
-            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`consulta` (dt_consulta, id_medico, id_paciente, descricao_consulta) VALUES ('" +
+            this.banco.nonQuery("INSERT INTO consulta (dt_consulta, id_medico, id_paciente, descricao_consulta) VALUES ('" +
                 this.GetDt_Consulta() + "', '" +
                 this.GetId_medico() + "', '" +
                 this.GetId_paciente() + "', '" +
-                this.GetDescricao_consulta() + "');");
+                this.GetDescricao_consulta() + "')");
             this.banco.close();
         }
 
@@ -118,7 +118,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int contagem = 0;
-            var temp = this.banco.Query("SELECT COUNT(*) FROM CONSULTA;");
+            var temp = this.banco.Query("SELECT COUNT(*) FROM CONSULTA");
             while (temp.Read())
             {
                 contagem = temp.GetInt32(0);
@@ -152,7 +152,7 @@ namespace Crud_Paciente_BD.Models
                     consultas.NextResult();
                 }
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -160,12 +160,12 @@ namespace Crud_Paciente_BD.Models
             return lista;
         }
 
-        public MySqlDataReader ListarConsultasPorMedico()
+        public OracleDataReader ListarConsultasPorMedico()
         {
             this.banco.conectar();
             return this.banco.Query("select m.id_medico, m.nome, count(c.id_consulta) from medico m " +
                 "left join consulta c on m.id_medico = c.id_medico " +
-                "group by m.nome; ");
+                "group by m.nome");
         }
 
         public List<Consulta> ConsultasPorMedicos()
@@ -189,7 +189,7 @@ namespace Crud_Paciente_BD.Models
                     consultas.NextResult();
                 }
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -201,7 +201,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int idExcluir = 0;
-            var temp = this.banco.Query("select c.id_paciente, count(c.id_paciente) from consulta c where c.id_paciente = " + id + ";");
+            var temp = this.banco.Query("select c.id_paciente, count(c.id_paciente) from consulta c where c.id_paciente = " + id + "");
             while (temp.Read())
             {
                 idExcluir = temp.GetInt32(1);
@@ -213,7 +213,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int idExcluir = 0;
-            var temp = this.banco.Query("select c.id_medico, count(c.id_medico) from consulta c where c.id_medico = " + id + ";");
+            var temp = this.banco.Query("select c.id_medico, count(c.id_medico) from consulta c where c.id_medico = " + id + "");
             while (temp.Read())
             {
                 idExcluir = temp.GetInt32(1);
@@ -221,11 +221,11 @@ namespace Crud_Paciente_BD.Models
             return idExcluir;
         }
 
-        public MySqlDataReader ListarConsultasPorId(int id)
+        public OracleDataReader ListarConsultasPorId(int id)
         {
             this.banco.conectar();
             return this.banco.Query("select c.id_consulta, c.id_medico, c.id_paciente, c.descricao_consulta," +
-                " c.dt_consulta from consulta c where c.id_consulta = " + id + "; ");
+                " c.dt_consulta from consulta c where c.id_consulta = " + id + "");
         }
 
         public List<Consulta> GetConsultasPorId(int id)
@@ -251,7 +251,7 @@ namespace Crud_Paciente_BD.Models
                     consultas.NextResult();
                 }
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
