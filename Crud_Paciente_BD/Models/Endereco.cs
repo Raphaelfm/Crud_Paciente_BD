@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient; // conexao com o banco de dados
+//using MySql.Data.MySqlClient; // conexao com o banco de dados
+using System.Data.OracleClient; // conexao com o banco de dados
 
 namespace Crud_Paciente_BD.Models
 {
@@ -18,7 +19,7 @@ namespace Crud_Paciente_BD.Models
         public string municipio;
         public string uf;
         public string cep;
-        private ConexaoBanco banco;
+        private ConexaoOracle banco;
 
         //CONSTRUTOR
         public Endereco()
@@ -31,7 +32,7 @@ namespace Crud_Paciente_BD.Models
             this.municipio = "";
             this.uf = "";
             this.cep = "";
-            this.banco = new ConexaoBanco();
+            this.banco = new ConexaoOracle();
 
 
         }
@@ -56,7 +57,7 @@ namespace Crud_Paciente_BD.Models
         //---INSERIR---
         public void cadastrarEndereco()
         {
-            MySqlDataReader reader;
+            OracleDataReader reader;
             this.banco.conectar();
             this.banco.nonQuery("insert into endereco (logradouro,numero,complemento,bairro,municipio,uf,cep)  values " +
                 "('" + this.GetLogradouro() + "', '" +
@@ -69,11 +70,10 @@ namespace Crud_Paciente_BD.Models
             reader = this.banco.Query("select id_endereco from endereco where" +
                 " logradouro='" + this.GetLogradouro() +
                 "' and numero='" + this.GetNumero() +
-                "' and complemento='" + this.GetComplemento() +
                 "' and bairro='" + this.GetBairro() +
                 "' and municipio='" + this.GetMunicipio() +
                 "' and uf='" + this.GetUf() +
-                "' and CEP='" + this.GetCep() + "';");
+                "' and CEP= '" + this.GetCep()+"'");
             reader.Read();
             int endereco = reader.GetInt32(0);
             this.SetId_endereco(endereco);
@@ -100,15 +100,15 @@ namespace Crud_Paciente_BD.Models
         {
             this.SetId_endereco(id);
             this.banco.conectar();
-            this.banco.nonQuery("Delete from endereco where id_endereco = '" + this.GetId_endereco() + "';");
+            this.banco.nonQuery("Delete from endereco where id_endereco = '" + this.GetId_endereco() + "'");
             this.banco.close();
         }
         //---LISTAR---
-        public  MySqlDataReader listarEnderecos()
+        public  OracleDataReader listarEnderecos()
         {
             this.banco.conectar();
             return this.banco.Query("select id_endereco, logradouro, numero,complemento,bairro, municipio, uf," +
-                " CEP from endereco; ");
+                " CEP from endereco");
             
         }
         //---CONTAGEM--
@@ -124,12 +124,12 @@ namespace Crud_Paciente_BD.Models
             return contagem;            
         }
 
-        public MySqlDataReader ListarEnderecosPorIdPaciente(int id)
+        public OracleDataReader ListarEnderecosPorIdPaciente(int id)
         {
             this.banco.conectar();
             return this.banco.Query("select e.id_endereco, e.logradouro, e.numero, e.complemento, e.bairro, e.municipio, e.uf, e.cep from endereco e " +
                 "inner join paciente p on e.id_endereco = p.id_endereco " +
-                "where p.id_paciente = " + id + ";");
+                "where p.id_paciente = " + id + "");
         }
 
         public List<Endereco> GetEnderecosPorIdPaciente(int id)
@@ -162,7 +162,7 @@ namespace Crud_Paciente_BD.Models
                 }
 
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -170,12 +170,12 @@ namespace Crud_Paciente_BD.Models
             return lista;
         }
 
-        public MySqlDataReader ListarEnderecosPorIdMedico(int id)
+        public OracleDataReader ListarEnderecosPorIdMedico(int id)
         {
             this.banco.conectar();
             return this.banco.Query("select e.id_endereco, e.logradouro, e.numero, e.complemento, e.bairro, e.municipio, e.uf, e.cep from endereco e " +
                 "inner join medico m on e.id_endereco = p.id_endereco " +
-                "where m.id_medico = " + id + ";");
+                "where m.id_medico = " + id + "");
         }
 
         public List<Endereco> GetEnderecosPorIdMedico(int id)
@@ -208,12 +208,25 @@ namespace Crud_Paciente_BD.Models
                 }
 
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
             return lista;
+        }
+
+        public void CorrigeNulos()
+        {
+            this.banco.conectar();
+            this.banco.nonQuery("update endereco set logradouro = 0 where logradouro is null");
+            this.banco.nonQuery("update endereco set numero = 0 where numero is null");
+            this.banco.nonQuery("update endereco set complemento = 0 where complemento is null");
+            this.banco.nonQuery("update endereco set bairro = 0 where bairro is null");
+            this.banco.nonQuery("update endereco set municipio = 0 where municipio is null");
+            this.banco.nonQuery("update endereco set UF = 0 where uf is null");
+            this.banco.nonQuery("update endereco set Cep = 0 where cep is null");
+            this.banco.close();
         }
     }
 }

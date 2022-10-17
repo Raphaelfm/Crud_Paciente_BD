@@ -8,7 +8,7 @@ DROP TABLE endereco;
 CREATE TABLE endereco (
   id_endereco int GENERATED ALWAYS AS IDENTITY NOT NULL,
   logradouro varchar(45) NULL,
-  numero int DEFAULT NULL,
+  numero varchar DEFAULT NULL,
   complemento varchar(45) NULL,
   bairro varchar(45) NULL,
   municipio varchar(45) NULL,

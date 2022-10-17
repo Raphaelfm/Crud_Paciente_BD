@@ -1,5 +1,4 @@
 ﻿using Crud_Paciente_BD.Models;
-using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Reflection;
@@ -317,6 +316,8 @@ namespace Crud_Paciente_BD
                         paciente.SetId_endereco(endereco.GetId_endereco());
 
                         paciente.CadastrarPaciente();
+
+                        endereco.CorrigeNulos();
 
                         Console.WriteLine("Paciente cadastrado com sucesso!! \n\nPressione qualquer tecla para continuar.");
                         Console.ReadKey();
