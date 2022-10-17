@@ -258,5 +258,12 @@ namespace Crud_Paciente_BD.Models
 
             return lista;
         }
+
+        public void CorrigeNull()
+        {
+            this.banco.conectar();
+            this.banco.nonQuery("update consulta set descricao_consulta = 0 where descricao_consulta is null");
+            this.banco.nonQuery("update consulta set dt_consulta = 0 where dt_consulta is null");
+        }
     }
 }
