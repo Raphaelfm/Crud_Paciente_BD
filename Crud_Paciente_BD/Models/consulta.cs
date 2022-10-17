@@ -165,7 +165,7 @@ namespace Crud_Paciente_BD.Models
             this.banco.conectar();
             return this.banco.Query("select m.id_medico, m.nome, count(c.id_consulta) from medico m " +
                 "left join consulta c on m.id_medico = c.id_medico " +
-                "group by m.nome");
+                "group by m.id_medico, m.nome");
         }
 
         public List<Consulta> ConsultasPorMedicos()
