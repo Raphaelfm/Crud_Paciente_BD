@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\IEnumerable.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.30" />
+    <PackageReference Include="System.Data.OracleClient" Version="1.0.8" />
   </ItemGroup>
 
 </Project>

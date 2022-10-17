@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,18 @@ namespace Crud_Paciente_BD.Models
         private string host = "localhost";
         private string database = "basedados_pacientes";
         private string user = "root";
-        private string password = "***";
+        private string password = "jan.0495";
         private int port = 3307;
         private MySqlConnection con;
         private MySqlCommand cmd;
         public ConexaoBanco()
+
+        
         {
             conectar();
         }
+
+
         public void conectar()
         {
             string strCon = @"server=" + this.host + "; database=" + this.database + "; user=" + this.user + "; password=" + this.password + "; port=" + this.port + ";";
@@ -42,4 +47,5 @@ namespace Crud_Paciente_BD.Models
             return this.cmd.ExecuteReader();
         }
     }
+        
 }
