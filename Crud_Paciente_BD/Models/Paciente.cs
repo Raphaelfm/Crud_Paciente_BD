@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace Crud_Paciente_BD.Models
 {
@@ -235,5 +236,16 @@ namespace Crud_Paciente_BD.Models
             return lista;
         }
 
+        public void CorrigeNull()
+        {
+            this.banco.conectar();
+            this.banco.nonQuery("update paciente set nome = 0 where nome is null");
+            this.banco.nonQuery("update paciente set da_nasc = 0 where dt_nasc is null");
+            this.banco.nonQuery("update paciente set sexo = 0 where sexo is null");
+            this.banco.nonQuery("update paciente set cpf = 0 where cpf is null");
+            this.banco.nonQuery("update paciente set celular = 0 where celular is null");
+            this.banco.nonQuery("update paciente set email = 0 where email is null");
+            this.banco.close();
+        }
     }
 }

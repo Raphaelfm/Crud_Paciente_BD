@@ -4,11 +4,11 @@ DROP TABLE medico;
 DROP TABLE paciente;
 DROP TABLE endereco;
 
--- Formando estrutura para tabela basedados_pacientes.endereco
+-- Formando estrutura para tabela s.endereco
 CREATE TABLE endereco (
   id_endereco int GENERATED ALWAYS AS IDENTITY NOT NULL,
   logradouro varchar(45) NULL,
-  numero varchar DEFAULT NULL,
+  numero varchar(10) DEFAULT NULL,
   complemento varchar(45) NULL,
   bairro varchar(45) NULL,
   municipio varchar(45) NULL,
@@ -17,7 +17,7 @@ CREATE TABLE endereco (
   PRIMARY KEY (id_endereco)
 );
 
--- Formando estrutura para tabela basedados_pacientes.medico
+-- Formando estrutura para tabela s.medico
 CREATE TABLE medico (
   id_medico int GENERATED ALWAYS AS IDENTITY NOT NULL,
   nome varchar(45) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE medico (
   CONSTRAINT medico_ibfk FOREIGN KEY (id_endereco) REFERENCES endereco (id_endereco) ON DELETE CASCADE
 );
 
--- Formando estrutura para tabela basedados_pacientes.paciente
+-- Formando estrutura para tabela s.paciente
 CREATE TABLE paciente (
   id_paciente int GENERATED ALWAYS AS IDENTITY NOT NULL,
   nome varchar(45) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE paciente (
   CONSTRAINT paciente_ibfk FOREIGN KEY (id_endereco) REFERENCES endereco (id_endereco) ON DELETE CASCADE
 );
 
--- Formando estrutura para tabela basedados_pacientes.consulta
+-- Formando estrutura para tabela s.consulta
 CREATE TABLE consulta (
   id_consulta int GENERATED ALWAYS AS IDENTITY NOT NULL,
   id_medico int NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE consulta (
 );
 
 
--- Formando dados para a tabela basedados_pacientes.endereco:
+-- Formando dados para a tabela s.endereco:
 INSERT INTO endereco (logradouro, numero, complemento, bairro, municipio, uf, cep) VALUES
 ('Brodway', 55, '', 'Campo Grande', 'Cariacica', 'ES', '29155-845');
 INSERT INTO endereco (logradouro, numero, complemento, bairro, municipio, uf, cep) VALUES
@@ -77,12 +77,12 @@ INSERT INTO endereco (logradouro, numero, complemento, bairro, municipio, uf, ce
 INSERT INTO endereco (logradouro, numero, complemento, bairro, municipio, uf, cep) VALUES
 ('Avenida Brasil', 13, 'Triplex', 'Sitio', 'Atibaia', 'SP', '63963659');
 
--- Formando dados para a tabela basedados_pacientes.medico
+-- Formando dados para a tabela s.medico
 INSERT INTO medico (nome, crm, celular, id_endereco) VALUES
 ('Luiz Inacio Squid Da Silva', 'PT13', '(27) 96599-9636', 10);
 
 
--- Formando dados para a tabela basedados_pacientes.paciente:
+-- Formando dados para a tabela s.paciente:
 INSERT INTO paciente (nome, dt_nasc, sexo, cpf, celular, email, id_endereco) VALUES
 ('John Travolta', '01/01/1950', 'M', '123,456,789-10', '(27) 99988-7766', 'travolta@hollywood.com', 1);
 INSERT INTO paciente (nome, dt_nasc, sexo, cpf, celular, email, id_endereco) VALUES
@@ -93,7 +93,7 @@ INSERT INTO paciente (nome, dt_nasc, sexo, cpf, celular, email, id_endereco) VAL
 ('Aristoteles Bidden', '01/01/1400', 'M', '123,456,987-65', '(27) 999999999', 'pensador@antigasso.com', 4);
    
 
--- Formando dados para a tabela basedados_pacientes.consulta:
+-- Formando dados para a tabela s.consulta:
 INSERT INTO consulta (id_medico, id_paciente, descricao_consulta, dt_consulta) VALUES
 (1, 2, 'Dores de cabeca constantes', '20/10/2022');
 INSERT INTO consulta (id_medico, id_paciente, descricao_consulta, dt_consulta) VALUES

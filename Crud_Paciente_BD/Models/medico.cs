@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿//using MySql.Data.MySqlClient;
+using System.Data.OracleClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Crud_Paciente_BD.Models
         public string celular;
         public int id_endereco;
 
-        public ConexaoBanco banco;
+        public ConexaoOracle banco;
         Endereco endereco = new Endereco();
 
         public Medico()
@@ -28,7 +29,7 @@ namespace Crud_Paciente_BD.Models
             this.id_endereco = 0;
 
 
-            this.banco = new ConexaoBanco();
+            this.banco = new ConexaoOracle();
         }
 
         public void SetId_medico(int novo) { this.id_medico = novo; }
@@ -45,12 +46,12 @@ namespace Crud_Paciente_BD.Models
 
         // CRIAR METODO PARA BUSCAR MEDICOS
 
-        public MySqlDataReader ListarMedicos()
+        public OracleDataReader ListarMedicos()
         {
             this.banco.conectar();
             return this.banco.Query("select m.id_medico, m.nome, m.crm ,m.celular ," +
                 " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from medico m " +
-                "join endereco e on m.Id_endereco = e.id_endereco; ");
+                "join endereco e on m.Id_endereco = e.id_endereco");
         }
 
         // ---ALTERAR---
@@ -61,7 +62,7 @@ namespace Crud_Paciente_BD.Models
             this.banco.nonQuery("UPDATE medico set nome='" + this.GetNome() +
                 "', crm='" + this.GetCrm() +
                 "', celular='" + this.GetCelular() +
-                "' where id_medico ='" + this.GetID_medico() + "';");
+                "' where id_medico ='" + this.GetID_medico() + "'");
             this.banco.close();
         }
 
@@ -70,21 +71,21 @@ namespace Crud_Paciente_BD.Models
             this.SetId_endereco(id);
             this.banco.conectar();
             this.banco.nonQuery("UPDATE endereco SET " +
-                "`Logradouro` = '" + this.GetLogradouro() +
-                "', `Numero` = '" + this.GetNumero() +
-                "', `complemento` = '" + this.GetComplemento() +
-                "', `Bairro` = '" + this.GetBairro() +
-                "', `municipio` = '" + this.GetMunicipio() +
-                "', `UF` = '" + this.GetUf() +
-                "', `CEP` = '" + this.GetCep() +
-                "' WHERE (`id_endereco` = '" + this.GetId_endereco() + "')");
+                "Logradouro = '" + this.GetLogradouro() +
+                "', Numero = '" + this.GetNumero() +
+                "', complemento = '" + this.GetComplemento() +
+                "', Bairro = '" + this.GetBairro() +
+                "', municipio = '" + this.GetMunicipio() +
+                "', UF = '" + this.GetUf() +
+                "', CEP = '" + this.GetCep() +
+                "' WHERE (id_endereco = '" + this.GetId_endereco() + "')");
             this.banco.close();
         }
 
         public void AlterarConsultaMedico(int id)
         {
             this.banco.conectar();
-            this.banco.nonQuery("update consulta set id_medico = 1 where id_medico = "+ id +";");
+            this.banco.nonQuery("update consulta set id_medico = 1 where id_medico = "+ id +"");
         }
 
         // ---INSERIR---
@@ -96,7 +97,7 @@ namespace Crud_Paciente_BD.Models
                 this.GetNome() + "', '" +
                 this.GetCrm() + "', '" +
                 this.GetCelular() + "', '" +
-                this.GetId_endereco() + "');");
+                this.GetId_endereco() + "')");
             this.banco.close();
         }
 
@@ -115,7 +116,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int contagem = 0;
-            var temp = this.banco.Query("SELECT COUNT(*) FROM MEDICO;");
+            var temp = this.banco.Query("SELECT COUNT(*) FROM MEDICO");
             while (temp.Read())
             {
                 contagem = temp.GetInt32(0);
@@ -159,7 +160,7 @@ namespace Crud_Paciente_BD.Models
                     medicos.NextResult();
                 }
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -172,7 +173,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int idExcluir = 0;
-            var temp = this.banco.Query("select m.id_endereco from medico m where m.id_medico = " + id + ";");
+            var temp = this.banco.Query("select m.id_endereco from medico m where m.id_medico = " + id + "");
             while (temp.Read())
             {
                 idExcluir = temp.GetInt32(0);
@@ -180,13 +181,13 @@ namespace Crud_Paciente_BD.Models
             return idExcluir;
         }
 
-        public MySqlDataReader ListarMedicosPorId(int id)
+        public OracleDataReader ListarMedicosPorId(int id)
         {
             this.banco.conectar();
             return this.banco.Query("select m.id_medico, m.nome, m.crm ,m.celular ," +
                 " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from medico m " +
                 "join endereco e on m.Id_endereco = e.id_endereco " +
-                "where m.id_medico = "+ id +"; ");
+                "where m.id_medico = "+ id +"");
         }
 
         //LISTAR O MEDICO NA TELA POR ID
@@ -226,13 +227,21 @@ namespace Crud_Paciente_BD.Models
                     medicos.NextResult();
                 }
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
             return lista;
 
+        }
+
+        public void CorrigeNull()
+        {
+            this.banco.conectar();
+            this.banco.nonQuery("update medico set nome = 0 where nome is null");
+            this.banco.nonQuery("update medico set crm = 0 where crm is null");
+            this.banco.nonQuery("update medico set celular = 0 where celular is null");
         }
     }
 }

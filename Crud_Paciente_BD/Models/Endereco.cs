@@ -85,14 +85,14 @@ namespace Crud_Paciente_BD.Models
             this.SetId_endereco(id);
             this.banco.conectar();
             this.banco.nonQuery("UPDATE endereco SET " +
-                "`Logradouro` = '" + this.GetLogradouro() +
-                "', `Numero` = '" + this.GetNumero() +
-                "', `complemento` = '" + this.GetComplemento() +
-                "', `Bairro` = '" + this.GetBairro() +
-                "', `municipio` = '" + this.GetMunicipio() +
-                "', `UF` = '" + this.GetUf() +
-                "', `CEP` = '" + this.GetCep() +
-                "' WHERE (`id_endereco` = '" + this.GetId_endereco() + "')");
+                "Logradouro = '" + this.GetLogradouro() +
+                "', Numero = '" + this.GetNumero() +
+                "', complemento = '" + this.GetComplemento() +
+                "', Bairro = '" + this.GetBairro() +
+                "', municipio = '" + this.GetMunicipio() +
+                "', UF = '" + this.GetUf() +
+                "', CEP = '" + this.GetCep() +
+                "' WHERE (id_endereco = '" + this.GetId_endereco() + "')");
             this.banco.close();
         }
         //---EXCLUIR---
