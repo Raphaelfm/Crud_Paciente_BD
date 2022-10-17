@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿//using MySql.Data.MySqlClient;
+using System.Data.OracleClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace Crud_Paciente_BD.Models
 {
@@ -21,7 +23,7 @@ namespace Crud_Paciente_BD.Models
         public string email;
         public int id_endereco;
 
-        public ConexaoBanco banco;
+        public ConexaoOracle banco;
         Endereco endereco = new Endereco();
 
         public Paciente()
@@ -35,7 +37,7 @@ namespace Crud_Paciente_BD.Models
             this.email = "";
             this.id_endereco = 0;       
 
-            this.banco = new ConexaoBanco();
+            this.banco = new ConexaoOracle();
         }
         public void SetId_paciente(int novo) { this.id_paciente = novo; }
         public void SetNome(string novo) { this.nome = novo; }
@@ -57,34 +59,34 @@ namespace Crud_Paciente_BD.Models
 
 
         // CRIAR METODO PARA BUSCAR PACIENTES PARA O GRID
-        public MySqlDataReader ListarPaciente()
+        public OracleDataReader ListarPaciente()
         {
             this.banco.conectar();
             return this.banco.Query("select p.id_paciente, p.Nome, p.dt_nasc,p.sexo,p.CPF, p.celular, p.email," +
                 " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from paciente p " +
-                "join endereco e on p.id_endereco = e.id_endereco; ");
+                "join endereco e on p.id_endereco = e.id_endereco");
         }
         // CRIAR METODO PARA BUSCAR PACIENTES PELO BOTÃO OK
-        public MySqlDataReader ListarPacientePorOk(string filtro)
+        public OracleDataReader ListarPacientePorOk(string filtro)
         {
             this.banco.conectar();
             return this.banco.Query("select p.id_paciente, p.Nome,p.dt_nasc,p.sexo, p.CPF, p.celular, p.email, " +
                 "e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from paciente p " +
-                "join endereco e on p.id_endereco = e.id_endereco where p.Nome like '%" + filtro + "%'; ");
+                "join endereco e on p.id_endereco = e.id_endereco where p.Nome like '%" + filtro + "%' ");
         }
         // ---INSERIR---
         public void CadastrarPaciente()
         {
             this.banco.conectar();
-            this.banco.nonQuery("INSERT INTO `basedados_pacientes`.`paciente` (`Nome`, `dt_nasc`,`sexo`," +
-                "`CPF`, `celular`,`email`, `id_endereco`) VALUES ('" +
+            this.banco.nonQuery("INSERT INTO paciente (Nome, dt_nasc,sexo," +
+                "CPF, celular,email, id_endereco) VALUES ('" +
                 this.GetNome() + "', '" +
                 this.GetDt_nasc() + "', '" +
                 this.GetSexo() + "', '" +
                 this.GetCpf() + "', '" +
                 this.GetCelular() + "', '" +
                 this.GetEmail() + "', '" +
-                this.GetId_endereco() + "');");
+                this.GetId_endereco() + "')");
             this.banco.close();
         }
         // ---ALTERAR---
@@ -98,7 +100,7 @@ namespace Crud_Paciente_BD.Models
                 "', cpf='" + this.GetCpf() +
                 "', celular='" + this.GetCelular() +
                 "', email='" + this.GetEmail() +
-                "' where id_paciente ='" + this.GetId_paciente() + "';");
+                "' where id_paciente ='" + this.GetId_paciente() + "'");
             this.banco.close();
         }
         // ---EXCLUIR---
@@ -114,11 +116,12 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int contagem = 0;
-            var temp = this.banco.Query("SELECT COUNT(*) FROM PACIENTE;");
+            var temp = this.banco.Query("SELECT COUNT(*) FROM PACIENTE");
             while (temp.Read())
             {
                 contagem = temp.GetInt32(0);
             }
+            temp.Close();
             return contagem;
         }
 
@@ -159,7 +162,7 @@ namespace Crud_Paciente_BD.Models
                 }
                 
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -171,7 +174,7 @@ namespace Crud_Paciente_BD.Models
         {
             this.banco.conectar();
             int idExcluir = 0;
-            var temp = this.banco.Query("select p.id_endereco from paciente p where p.id_paciente = " + id +";");
+            var temp = this.banco.Query("select p.id_endereco from paciente p where p.id_paciente = " + id +"");
             while (temp.Read())
             {
                 idExcluir = temp.GetInt32(0);
@@ -179,13 +182,13 @@ namespace Crud_Paciente_BD.Models
             return idExcluir;
         }
 
-        public MySqlDataReader ListarPacientePorId(int id)
+        public OracleDataReader ListarPacientePorId(int id)
         {
             this.banco.conectar();
             return this.banco.Query("select p.id_paciente, p.Nome, p.dt_nasc,p.sexo,p.CPF, p.celular, p.email," +
                 " e.id_endereco, e.logradouro, e.numero,e.complemento, e.bairro, e.municipio, e.uf, e.cep from paciente p " +
                 "join endereco e on p.id_endereco = e.id_endereco " +
-                "where p.id_paciente = " + id + "; ");
+                "where p.id_paciente = " + id + "");
         }
 
         public List<Paciente> GetPacientesPorId(int id)
@@ -225,12 +228,24 @@ namespace Crud_Paciente_BD.Models
                 }
 
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
             return lista;
+        }
+
+        public void CorrigeNull()
+        {
+            this.banco.conectar();
+            this.banco.nonQuery("update paciente set nome = 0 where nome is null");
+            this.banco.nonQuery("update paciente set da_nasc = 0 where dt_nasc is null");
+            this.banco.nonQuery("update paciente set sexo = 0 where sexo is null");
+            this.banco.nonQuery("update paciente set cpf = 0 where cpf is null");
+            this.banco.nonQuery("update paciente set celular = 0 where celular is null");
+            this.banco.nonQuery("update paciente set email = 0 where email is null");
+            this.banco.close();
         }
     }
 }
