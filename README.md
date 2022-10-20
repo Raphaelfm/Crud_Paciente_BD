@@ -23,6 +23,9 @@ sudo snap alias dotnet-sdk.dotnet dotnet
 
 dotnet --info
 
+----------------------------------------------------------------------------------
+Vá até a pasta models, Abra a classe ConexãoBanco, aponte as configurações do seu banco de dados.
+
 
 na loja do visual studio instalar:
 c#
