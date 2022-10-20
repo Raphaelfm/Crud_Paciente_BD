@@ -8,7 +8,7 @@ namespace Crud_Paciente_BD.Models
         private string database = "basedados_teste";
         private string user = "system";
         private string password = "jan.0495";
-        private int port = 3307;
+        private int port = 1521;
         private OracleConnection conn;
         private OracleCommand cmd;
         public ConexaoOracle()
