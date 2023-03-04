@@ -122,6 +122,7 @@ namespace Crud_Paciente_BD.Models
                 contagem = temp.GetInt32(0);
             }
             temp.Close();
+            this.banco.close();
             return contagem;
         }
 
